@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<div class="ticket-counter-list" xmlns:th="http://www.thymeleaf.org" 	>
+
+<div layout:fragment="content">	
+	<div id="ticket-edit-window" th:if="${not ticketInformation.fromBundle}" >
+		
+		<style>	
+			.date-range
+			{		
+				font-weight: bolder;		
+			}
+			
+			.period-list-row:hover .set-active-period
+			{
+				visibility: visible;
+			}
+			
+			.period-list-row .set-active-period
+			{
+				visibility: hidden;
+			}	
+			
+			#oldTicketNumber, #newTicketNumber
+			{
+				font-size: 16px;
+			}
+		</style>
+		
+		
+		<form action="">
+			<input type="hidden" name="oldIdTicket" id="oldIdTicket"  th:value="${ticketInformation.idTicket}" />
+			
+			<input type="hidden" name="productName" id="productName"  th:value="${ticketInformation.productName}" />
+			
+			<div class="general-form">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label" for="lastName">Old Ticket Number</label> 							
+								<input id="oldTicketNumber" name="ticketNumber"  th:value="${ticketInformation.ticketNumber}" readonly="readonly"
+								type="text" placeholder="4 digit" required class="form-control input-lg" aria-required="true">								
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label" for="lastName">New Ticket Number</label> 							
+								<input id="newTicketNumber" name="ticketNumber"  th:value="${ticketInformation.ticketNumber}"
+								type="text" placeholder="4 digit" required class="form-control input-lg" aria-required="true">								
+						</div>
+					</div>
+					
+					<div class="col-md-6">
+						
+						<span id="newTicketInfoMessage"></span>
+						
+					</div>
+	
+					<div class="col-md-offset-1 col-md-10">
+						
+					<div class="">
+						
+						<h3>The Actual Ticket  <span style="font-weight: bolder;">#<span th:text="${ ticketInformation.ticketNumber }">1234</span> is a <span th:text="${ ticketInformation.productName }">Vacation</span> ticket!</span>											
+						</h3>						
+						<h4 th:if="${ ticketInformation.productName != 'Bundle'}">						
+							<span th:if="${ ticketInformation.productName != 'Bundle'}">You can modify this Ticket with other Car or Vacation Ticket</span>
+						</h4>
+						
+						<div th:if="${ ticketInformation.productName == 'Bundle' }">
+							<div class="alert alert-info">
+	                                Please note: The selcted ticket is a Bundle Ticket, you only can change it with other bundle ticket!
+	                            </div>
+							<h4 class="text-success">Ticket details for this Bundle:</h4>
+							
+							<div >
+								<div class="row">					
+						                <!-- Car Tickets -->
+						                
+						                	<h4>Car Tickets:</h4>
+						                
+						                <div  class="pull-left" th:each="ticket : ${ ticketInformation.carTickets} " >
+						                    <span style="font-size:14px;" class="label label-primary" ><i class="fa fa-ticket "></i> <span th:text="${ticket}">123456</span></span>
+						                    &nbsp;&nbsp;&nbsp;
+						                </div>		               
+						               
+						            </div>
+						            <div class="row">
+						            	
+						                	<h4>Vacation Tickets:</h4>
+						                
+							             <div  class="pull-left" th:each="ticket : ${ ticketInformation.vacTickets} " >
+							                  
+						                    <span style="font-size:14px;" class="label label-warning" ><i class="fa fa-ticket "></i> <span th:text="${ticket}">123456</span></span>
+						                &nbsp;&nbsp;&nbsp;
+							            </div>
+							                
+						            </div>
+								
+							</div>												
+						</div>
+						
+					</div>
+						
+					</div>								
+				</div>
+				
+				<hr />
+				
+				<div class="row">
+					<!-- Text input-->
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label" for="purchaseDate">Purchase
+									Date</label>
+		
+		
+								<div class="input-group date">
+									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									<input type="text" class="form-control" id="purchaseDate" name="purchaseDate" required th:value="${ #dates.format(new java.util.Date(), 'MM/dd/yyyy')}" value="11/10/2018" aria-required="true" >
+									
+									
+									
+								</div>
+		
+							</div>
+						</div>
+		
+						<div class="col-md-4">
+							<div class="form-group">
+								
+								 <div class="col-sm-12">                                       
+		                              								 
+									<label class="control-label" for="date">Payment Type</label> 
+									<div class="checkbox-group required">
+		                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType" th:checked="${#strings.contains(ticketInformation.paymentType,'CC')}" 			value="CC" name="paymentType"> <i></i> Credit Card </label></span>
+		                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType" th:checked="${#strings.contains(ticketInformation.paymentType,'Cash')}"		value="Cash"  name="paymentType"> <i></i> Cash </label></span>                                                             
+		                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType" th:checked="${#strings.contains(ticketInformation.paymentType,'Mail Chk')}"	value="Mail Chk"  name="paymentType"> <i></i> Mail Chk. </label></span>
+		                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType" th:checked="${#strings.contains(ticketInformation.paymentType,'Other')}"		value="Other"  name="paymentType"> <i></i> Other </label></span>
+		                             </div>
+		                                                            
+								 </div>							
+								
+								
+							</div>
+						</div>
+		
+					</div>
+				
+								
+			</div>
+		</form>
+		
+		<script>
+			(function(){
+				$('#ticket-edit-window .i-checks').iCheck({
+					checkboxClass: 'icheckbox_square-green',
+					radioClass: 'iradio_square-green',
+				});
+
+				$("#ticket-edit-window #purchaseDate").datepicker({
+			        startView: 0,
+			        todayBtn: "linked",
+			        keyboardNavigation: false,
+			        forceParse: false,
+			        autoclose: true,
+			        format: "mm/dd/yyyy"
+			    });
+
+
+				$("#newTicketNumber").on('change',function(){
+					
+					var ticketNumber = $(this).val();
+					var productName = $("#productName").val();
+
+					var oldTicketNumber =$("#oldTicketNumber").val();
+
+					var validationMessages = [];
+
+					$("#newTicketInfoMessage").html("");
+
+					
+					if(productName == "Bundle" )
+					{
+						loadBundleTickets( getPeriodId(), ticketNumber, true , function(bundleData)
+						{
+								
+							//validar bundle
+							if(bundleData.bundleNumber == null)
+							{
+								//can't be used, no bundle
+								validationMessages.push("Bundle #" + ticketNumber +" not found in database!, please provide a valid bundle Number");
+							}
+
+							if(bundleData.broken)
+							{
+								validationMessages.push("Bundle #" + ticketNumber +" is Split into individual Tickets, can't be used to replace the Bundle Ticket #" + oldTicketNumber);
+							}
+
+							if(validationMessages.length > 0)
+							{
+								var messages = "<ul>";
+ 	
+								$.each(validationMessages, function(i, item){
+									messages += "<li>" + item  + "</li>";	
+								});
+								
+								toastr['error'](messages+"</ul>");
+							}
+							else
+							{
+								//load bundle information
+								var carTickets = "", vacTickets;
+
+								if(bundleData.carTickets != null)
+								{
+									carTickets = "Car Tickets: <b>" + bundleData.carTickets.join(', ')+"</b>"; 
+								}
+
+								if(bundleData.vacTickets != null)
+								{
+									vacTickets = "<br />Vacation Tickets: <b>" + bundleData.vacTickets.join(', ')+"</b>"; 
+								}
+								
+								
+								
+								
+								validateEditTicketNumber( getPeriodId(), ticketNumber,3);
+
+
+								$("#newTicketInfoMessage").append("<h3>Target Bundle Information:</h3>" + carTickets + "" + vacTickets)
+								
+							}
+
+							
+	
+						});
+					}
+					else
+					{
+						
+						var idProduct = productName == "Car" ? 1 : 2;
+						
+						validateEditTicketNumber( getPeriodId(), ticketNumber,idProduct);
+					}
+				});
+
+				function validateEditTicketNumber(idPeriod, ticketNumber,idProduct)
+				{
+					$.ajax({
+						 type: "POST",
+						 url: basePath + "/ticket/validate-new-edit-ticket?idPeriod="+idPeriod+"&ticketNumber="+ticketNumber+"&idProduct="+idProduct,						 
+						 contentType: "application/json; charset=utf-8",
+						 dataType: "json"			 
+						}).done(function(data){
+
+							
+							if(data.success && (data.multipleMessage == null || data.multipleMessage.length == 0 ))
+							{
+								$("#newTicketInfoMessage").append("<h3 class='text-success'>The new ticket ("+ticketNumber+") is valid</h3> " );
+							}
+							else
+							{ 
+								var messages = "<ul>";
+
+								$.each(data.multipleMessage, function(i, item){
+
+									messages += "<li>" + item  + "</li>";
+									
+								});
+								
+								toastr['error'](messages+"</ul>");
+								
+							}
+						}).fail(function(data){
+							
+							toastr['error']("Ticket not validated, an unexpected error has occurred (Server Error)!");
+							
+						});
+				}
+
+				function showValidationErrors(errorMessages)
+				{
+				}
+				
+				function newTicketChange()
+				{
+				}
+				 
+			})();
+
+
+			
+			
+		</script>
+	</div>
+
+
+	<div th:if="${ticketInformation.fromBundle}">
+	
+	<h1>This ticket can't be modified individually because is part of an Bundle (<span th:text="${ticketInformation.bundleNumberFromCatalog}">0001</span>)</h1>
+	
+	</div>
+</div>
+</div>

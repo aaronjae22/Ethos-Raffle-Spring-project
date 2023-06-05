@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div th:fragment="main-form">
+	
+		<div class='row'>
+			<div class="col-lg-offset-1 col-lg-8">
+			
+			<div class="well-title">
+				<h2>Please provide User Information</h2>
+			</div>
+
+		<form id="user-form" action="@{/user/administration/save-user}" th:action="@{/}" class="general-form form-horizontal"
+			onsubmit="event.preventDefault();saveUserGeneral();" data-id="0">
+			
+			<div class="ibox-content">
+                                                     
+                         <div class="form-group"><label class="col-lg-2 control-label">Full&nbsp;Name</label>
+                             <div class="col-lg-10"><input id="full-name-input" placeholder="Full Name" required class="form-control"> <span class="help-block m-b-none"></span>
+                             </div>
+                         </div>
+                         
+                         <div class="form-group"><label class="col-lg-2 control-label">User&nbsp;Name</label>
+                             <div class="col-lg-10"><input id="username-input" placeholder="User Name" required class="form-control"> <span class="help-block m-b-none"></span>
+                             </div>
+                         </div>
+                                                  
+                         <div class="form-group">
+                         	<label class="col-sm-2 control-label">Role </label><br>                                    
+                              <div class="col-sm-10">
+                                  <div><label> <input type="radio" value="administrator" 	id="administrator-user"  required name="role-user"> Administrator User </label></div>
+                                  <div><label> <input type="radio" value="regular-user" 	id="regular-user" 		 required name="role-user"> Regular User </label></div>
+                              </div>
+                          </div>
+                          
+                           <div class="form-group">
+                         	<label class="col-sm-2 control-label">Active</label><br>                                    
+                              <div class="col-sm-10">
+                                  
+                                  <div class="switch">
+		                                <div class="onoffswitch">
+		                                    <input type="checkbox" checked class="onoffswitch-checkbox" id="active-check">
+		                                    <label class="onoffswitch-label" for="active-check">
+		                                        <span class="onoffswitch-inner"></span>
+		                                        <span class="onoffswitch-switch"></span>
+		                                    </label>
+		                                </div>
+		                            </div>
+                                  
+                              </div>
+                          </div>
+                          
+                       
+                         <div class="form-group">
+                             <div class="col-lg-offset-3 col-lg-6">
+                                                              
+                                 <button id="save-user-button" class="btn btn-primary " type="submit"><i class="fa fa-save"></i>&nbsp;Save User</button>
+                                 <button id="cancel-button" class="btn btn-sm btn-white" type="button">Cancel</button>
+                                 
+                             </div>
+                         </div>
+                     
+              </div>
+			
+		</form>
+		</div>
+		<div class=" col-lg-1" th:if="${loggedUser.administrator}">
+			<button id="reset-password-button" class="btn btn-success " type="submit"><i class="fa fa-key"></i>&nbsp;Reset Passwword</button>		
+		</div>
+		</div>
+		
+		<div class="hr-line-dashed"></div>
+			
+			
+		<!-- form end -->
+	</div>
+</body>
+</html>

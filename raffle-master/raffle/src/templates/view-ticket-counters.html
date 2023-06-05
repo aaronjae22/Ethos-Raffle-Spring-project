@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<div class="ticket-counter-list" xmlns:th="http://www.thymeleaf.org">
+
+	<table class="table">
+        <thead>
+        <tr>
+            <th>Week</th>
+            <th>Total Count</th>            
+        </tr>
+        </thead>
+        <tbody>
+	        <tr th:each=" weekCount :  ${ ticketCounters }">
+	            <td >Week <span th:text="${  #numbers.formatDecimal(            weekCount.weekNumber , 0, 'COMMA', 0, 'POINT')  }">1</span></td>
+	            <td th:text="${weekCount.counter}">15</td>
+	        </tr>        
+        </tbody>
+    </table>
+
+</div>

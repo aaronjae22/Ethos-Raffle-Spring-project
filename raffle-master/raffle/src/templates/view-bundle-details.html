@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<!--/* Title of this template will be passed to the head fragment along with custom links and scripts */-->
+<head>
+
+	
+
+</head>
+<body>
+
+	<div layout:fragment="content">		
+
+		<style type="text/css">
+		
+			.row-actions
+			{
+				visibility: hidden; 	
+			}
+			.contact-row:hover .row-actions
+			{
+				visibility: visible;
+			}
+			
+			#filters-row .form-control 
+			{
+				width: 100%;
+			}
+			
+			.focus-ticket
+			{
+				
+				border : dashed buttonshadow;
+			}
+		
+		</style>
+		 
+		
+		
+		<h1 style="font-weight: bolder;" >Bundle #<span th:text="${tickets.bundleNumber}">0001</span> detail</h1>
+		<h3 class='text-navy'>** The ticket is part of this Bundle, to use it, you must split this bundle!**</h3>
+		<div class="row">
+			
+			<div class="col-sm-12">
+				<div class="row">					
+		                <!-- Car Tickets -->
+		                
+		                	<h1>Car:</h1>
+		                
+		                <div class="col-xs-3 col-sm-3 col-lg-3" th:each="ticket : ${ tickets.carTickets} " th:classappend="${ ticketNumberFocus == ticket ? 'focus-ticket' : ''  }">
+		                    <div class="widget style2 lazur-bg">
+		                        <div class="row vertical-align">
+		                            <div class="col-xs-3">
+		                                <i class="fa fa-ticket fa-2x"></i>
+		                            </div>
+		                            <div class="col-xs-9 text-right">
+		                                <h2 class="font-bold" th:text="${ticket}">120</h2>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>		               
+		               
+		            </div>
+		            <div class="row">
+		            	
+		                	<h1>Vacation:</h1>
+		                
+			             <div class="col-xs-3  col-sm-3 col-lg-3" th:each="ticket : ${ tickets.vacTickets} " th:classappend="${ ticketNumberFocus == ticket ? 'focus-ticket' : ''  }">
+			                    <div class="widget style2 yellow-bg">
+			                        <div class="row vertical-align">
+			                            <div class="col-xs-3">
+			                                <i class="fa fa-ticket fa-2x"></i>
+			                            </div>
+			                            <div class="col-xs-9 text-right">
+			                                <h2 class="font-bold" th:text="${ticket}" >610</h2>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			                
+		            </div>
+				
+			</div>
+		</div>
+			
+			<br /><br /><br />
+		<div class="row">
+			
+			<button id="break-bundle-button" 
+			th:data-bundle-number="${tickets.bundleNumber}"
+			th:data-period-id="${tickets.idPeriod}" 
+			th:data-focus-number="${ticketNumberFocus}" type="button" class="btn btn-success btn-lg btn-rounded pull-right">
+			<i class="fa fa-chain-broken"></i>&nbsp;&nbsp;Split this Bundle</button>
+			
+		</div>
+		
+	</div> 
+
+	<div layout:fragment="footerScripts"  >				
+		<script>
+		var basePath = '[[@{/}]]';
+		
+		$("#break-bundle-button").on('click',function(){
+
+			var bundleNumber = $(this).attr("data-bundle-number");
+			var focusTicket = $(this).attr("data-focus-number");
+			
+			var idPeriod =$(this).attr("data-period-id");
+
+			BootstrapDialog.confirm({
+	            title: 'WARNING',
+	            message: '<h2>Do you really want <b>Split</b> this Bundle?<br />This action can\'t be rolled back!</h2>',
+	            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+	            closable: true, // <-- Default value is false
+	            draggable: true, // <-- Default value is false
+	            btnCancelLabel: 'Cancel!', // <-- Default value is 'Cancel',
+	            btnOKLabel: 'Yes, split it !', // <-- Default value is 'OK',
+	            btnOKClass: 'btn-success', // <-- If you didn't specify it, dialog type will be used,
+	            callback: function(result) {
+	                // result will be true if button was click, while it will be false if users close the dialog directly.
+	                if(result) {
+
+
+
+	                	$.ajax({
+	           			 type: "POST",
+	           			
+	           			 url: basePath + "ticket/break-bundle-ticket?idPeriod="+ idPeriod +"&bundleNumber="+bundleNumber,
+	           			 data: {},
+	           			 contentType: "application/json; charset=utf-8",
+	           			 dataType: "json"			 
+	           			}).done(function(data){
+	           							
+	           				if(data != null && data.success)
+	           				{
+	           					toastr['success']("Bundle was split successfully!, the bundle tickets can be used individually now!");
+	           					window.confirmBundleSplit(bundleNumber,focusTicket);
+	           				}
+	           				else
+	           				{	           			
+	           					toastr['error'](data.error);
+	           				}
+	           			}).fail(function(data){	           				           			
+	           				toastr['error']("Ticket not split! (Server Error)!");				
+	           			});
+	           				
+
+	                	
+	                	
+	                	
+	                	
+	                	
+	                    
+	                }else {
+	                    //alert('Nope.');
+	                }
+	            }
+	        });
+
+	        
+			 
+		});
+		
+		</script>
+				
+	</div>
+			
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/main}">
+<!--/* Title of this template will be passed to the head fragment along with custom links and scripts */-->
+<head>
+</head>
+<body>
+
+	
+
+	<!--/* Insert content fragment with content of the element with id = 'task-details' */-->
+	<div layout:fragment="content">		
+	
+	
+	
+			
+		<style type="text/css">
+		
+			.row-actions
+			{
+				visibility: hidden; 
+			}
+			.user-row:hover .row-actions
+			{
+				visibility: visible;
+			}
+		
+		</style>
+		
+		<div class="container" id="table-container" th:if="${ loggedUser.administrator }" >
+        
+        <div class="row">
+        
+        <div class="col-offset-1 col-lg-10">
+        <div>
+	        <h1 class='pull-left' style="margin-top:0">User List</h1>
+	        
+	        <button id="add-user-button" type="button" class="btn btn-primary btn-lg pull-right ">Add User</button>
+	        
+	        <div style="clear: both;"></div>
+        </div>
+                <div class="ibox float-e-margins">
+                   
+                    <div class="ibox-content">
+
+                        <table class="table" id="users-table" >
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${userList} " class="user-row">
+                                <td th:text="${user.idUser}" class='id-column' th:data-id="${user.idUser}" >1</td>
+                                <td th:text="${user.userName}">ljcmoreno</td>
+                                <td th:text="${user.fullName}">John Doe</td>
+                                <td th:text="${user.administrator ? 'Administrator' : 'Regular User' }">Administrator</td>
+                                <td th:text="${user.active ? 'Active' : 'Inactive'}">Status</td>                                
+                                <td>
+                                	<div class="row-actions">
+                               	 		<button id="edit-user-button" class="btn btn-info btn-circle" type="button"><i class="fa fa-pencil"></i>
+                          			  	</button>
+                          			  	
+                          			  	&nbsp;
+                          			  	
+                          			  	<!-- 
+                          			  	<button id="delete-user-button" title="Inativate User" class="btn btn-danger btn-circle" type="button"><i class="fa fa-minus"></i>
+                          			  	</button>
+                          			  	
+                          			  	 -->
+                          			  	
+                                	</div>
+                                </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+             
+        </div>
+					
+			
+		<!--/* EDITOR PANEL */-->
+		<div th:if="${loggedUser.administrator}">
+			<div  class="cd-panel cd-panel-right from-right size-40" >
+				<header class="cd-panel-header ">
+					<h1>User Editor</h1>
+					<a href="#0" class="cd-panel-close">Close</a>
+				</header>
+				<div class="cd-panel-container form-content" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.1);">
+					<div class="cd-panel-content">
+
+						<div class="row">
+
+							<div class="col-md-offset-0 col-lg-12">
+								<div class="ibox float-e-margins">
+
+									<div class="ibox-content">
+										<div class="row">
+
+											<div class="col-md-12">
+												<div class="well-block">
+
+													<div th:insert="~{user-form :: main-form}"></div>
+
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div> <!-- cd-panel-content -->
+				</div> <!-- cd-panel-container -->
+			</div> <!-- cd-panel -->
+		</div>
+		
+		
+		<div th:if="${ ! loggedUser.administrator }" class="">
+		
+			<div class="alert alert-warning">
+	               <h1> You do not have Administration rights!</h1><br />
+	                <a href="index.html" th:href="@{/dashboard/home}" class="btn btn-primary m-t">Dashboard</a>
+           	</div>
+                            
+			
+		
+		</div>
+		
+	</div> 
+
+	<div layout:fragment="footerScripts"  >
+		
+		<script src="../../../WebContent/resources/js/app/user-administration.js"			th:src="@{/resources/js/app/user-administration.js?v=1.1}"	></script>
+				
+		<script>
+
+		var basePath = '[[@{/}]]';
+		
+		initializeEvents(basePath);
+		
+		</script>
+				
+	</div>
+			
+</body>
+</html>

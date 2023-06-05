@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div id="add-call-form" >
+	
+		<div class='row'>
+			<div class="col-lg-12">
+			
+			<div class="well-title">
+				<h2 class="text-success"><strong>Please provide the Call Information!</strong></h2>
+				
+				<h5 class="pull-right">This call will be registered by: <i class="fa fa-user"></i>&nbsp;&nbsp;<span th:text="${loggedUser.fullName}">Harry Gutierrez</span></h4>
+			</div>
+
+		<form id="user-form" action="@{/contact/save-contact-call}" th:action="@{/}" class="general-form form-horizontal"
+			onsubmit="event.preventDefault();" data-id="0">
+			
+			<div class="ibox-content">
+                                                     
+                         <div class="form-group"><label class="col-lg-4 control-label">Call Date:</label>
+                             <div class="col-lg-8">
+                             
+                             	<input id="call-date-input" placeholder="Cal Date" th:value="${#dates.format(#dates.createNow(), 'MM/dd/yyyy')}" value="10/21/2018" required class="form-control"> 
+                             	
+                             	<span class="help-block m-b-none"></span>
+                             </div>
+                         </div>
+                         
+                         <div class="form-group"><label class="col-lg-4 control-label">Follow Up:</label>
+                             <div class="col-lg-8">
+                             
+                             
+                              
+                             <select id="followUpCall" class="form-control m-b" name="account">
+
+                                  <option th:each="followUp : ${ followUpCallList}" value="option1"  th:value="${followUp.idFollowUp_Call}" th:text="${followUp.description}" >option 1</option>                                        
+                              </select>
+                             	
+                             
+                             <span class="help-block m-b-none"></span>
+                             </div>
+                         </div>
+                                                  
+                         <div class="form-group">
+                         	<label class="col-lg-4 control-label">Spoken with the Contact?</label><br>                                    
+                              
+                              <div class="col-sm-8">                                       
+                                       <span class="i-checks checkbox-inline"><label> <input type="radio" checked value="YES" name="spokenWithContact"> <i></i> YES </label></span>
+                                       <span class="i-checks checkbox-inline"><label> <input type="radio" 		  value="NO"  name="spokenWithContact"> <i></i> NO </label></span>
+								</div>
+                                    
+                          </div>
+                          
+                           <div class="form-group">
+                              <div class="col-sm-12">
+                                  
+	                         	<label class="control-label">Memo</label><br>                                    
+                                  <textarea id="call-memo" rows="4" placeholder="Please provide a note for this call" class="form-control"></textarea>                                  
+                              </div>
+                          </div>
+                          
+                          <input name="idContact" id="idContact" type="hidden" th:value="${idContact}" />
+                          
+                                                 
+                         <div class="form-group">
+                             <div class="col-lg-offset-3 col-lg-6 pull-right">                                                               
+                                 <button id="add-call-button" class="btn btn-primary " type="submit"><i class="fa fa-save"></i>&nbsp;Save this Call</button>
+                                 
+                                 <!-- 
+                                 <button id="cancel-button"   class="btn btn-sm btn-white" type="button">Clear</button>
+                                  -->
+                                                                  
+                             </div>
+                         </div>                     
+              </div>		
+		</form>
+		</div>
+		</div>
+		
+		<!-- form end -->
+		
+		
+		<script>
+
+		(function()
+		{
+			console.info("Dialog intialization");
+			
+			$("#call-date-input").datepicker({
+		        startView: 0,
+		        todayBtn: "linked",
+		        keyboardNavigation: false,
+		        forceParse: false,
+		        autoclose: true,
+		        format: "mm/dd/yyyy"
+		    });
+
+
+			$(document).ready(function () {
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                });
+            });
+
+            
+			$("#add-call-button").on('click',function(){
+
+				var callInfo = getCallInformation();
+
+				saveCallInformation( callInfo, function(){
+
+					console.info("Saved successfully!");	
+
+				});
+			});
+
+
+
+			function saveCallInformation(saveInformation, callback)
+			{
+
+				var json = JSON.stringify( saveInformation);
+				
+				$.ajax({
+					 type: "POST",
+					 url: basePath + "contact/save-call",
+					 data: saveInformation,//saveInformation, 
+					 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					 dataType: "json"			 
+					}).done(function(data){
+						
+						if(data.success)
+						{
+							toastr['success']("Call Information saved successfully!");
+
+							$("#followUpCall").val(1);
+
+							
+							$("[name='spokenWithContact'][value='YES']").prop('selected')							
+							$("#call-memo").html('');
+
+
+							window.reloadContactDetails();
+								
+						}
+						else
+						{
+							toastr['error'](data.message);	
+						}
+					}).fail(function(data){
+						
+						toastr['error']("An error has occurred, Call not saved!");
+						
+					});
+
+			}
+
+			function getCallInformation()
+			{
+				var date = $("#call-date-input").val();
+				var idFollowUpCall = $("#followUpCall").val();
+				var spokenWithContact = $("[name=spokenWithContact]:checked").val();
+				var idContact = 	$("#idContact").val();
+				var memo 		=   $("#call-memo").val();
+							
+
+				return {
+							callDate 			: date,
+							idFollowUpCall 		: idFollowUpCall,
+							spokenWithContact 	: spokenWithContact,
+							idContact 			: idContact,
+							memo				: memo
+					};
+			}	    
+		})();
+		
+		</script>
+		
+	</div>
+</body>
+</html>

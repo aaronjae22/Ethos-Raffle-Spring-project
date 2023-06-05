@@ -1,0 +1,251 @@
+	<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div th:fragment="main-form">
+		<div class="well-title">
+			<h2>Please provide Ticket Information</h2>
+		</div>
+
+		<style type="text/css">
+		
+			.general-form #ticket-numbers-row.row-1 .tickets-actions .delete-ticket-row
+			{
+				visibility: hidden;
+			}
+			
+			 .select2-hidden {
+		        display:none !important;
+		    }
+		</style>
+		
+		<script id="row-template" type="text/template">
+
+			<div id="ticket-numbers-row" class="row row-1 ticket-numbers-row">
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label" for="bundleNumber">Bundle Number</label>
+							<input id="bundleNumber" name="bundleNumber" type="text"
+								placeholder="Bundle" class="form-control input-md">
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label" for="lastName">CAR Tickets</label>
+							<select  class="ticket-numbers car-tickets form-control" multiple  name="car-tickets">
+							</select>
+						</div>								
+					</div>
+					
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label" for="lastName">VAC Tickets</label>
+							<select  class="ticket-numbers vac-tickets form-control" multiple  name="vac-tickets">
+							</select>
+						</div>								
+					</div>
+					
+					<div class="col-md-2">
+						<div class="tickets-actions">					
+							<br/>
+							<button class="btn btn-primary dim add-ticket-row" 		title="Add more Tickets or Bundle"	type="button"><i class="fa fa-plus"		></i></button>
+							<button class="btn btn-danger  dim delete-ticket-row" 	title="Delete this Tickets"	type="button"><i class="fa fa-trash"	></i></button>
+						</div>
+					</div>
+	
+				</div>
+
+		</script>
+		
+		<form action="#" th:action="@{/}" class="general-form"
+			onsubmit="event.preventDefault();saveTicketGeneral();" >
+			<!-- Form start -->	
+
+			<div class="ticket-rows">
+		
+				<div id="ticket-numbers-row" class="row row-1 ticket-numbers-row">
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label" for="bundleNumber">Bundle Number</label>
+							<input id="bundleNumber" name="bundleNumber" type="text"
+								placeholder="Bundle" class="form-control input-md">
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label" for="lastName">CAR Tickets</label>
+							<select  class="ticket-numbers car-tickets form-control" multiple name="car-tickets">
+							</select>
+						</div>								
+					</div>
+					
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label" for="lastName">VAC Tickets</label>
+							<select  class="ticket-numbers vac-tickets form-control" multiple name="vac-tickets">
+							</select>
+						</div>								
+					</div>
+					
+					<div class="col-md-2">
+						<div class="tickets-actions">					
+							<br/>
+							<button class="btn btn-primary dim add-ticket-row" 		title="Add more Tickets or Bundle"	type="button"><i class="fa fa-plus"		></i></button>
+							<button class="btn btn-danger  dim delete-ticket-row" 	title="Delete this Tickets"	type="button"><i class="fa fa-trash"	></i></button>
+						</div>
+					</div>
+	
+				</div>
+			</div>
+			
+			<div class="hr-line-dashed"></div>
+			
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label" for="lastName">Last Name</label> 
+						<select id="last-name-select" required name="lastName"
+							class="last-name-select2 form-control">
+						</select>
+						
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="form-group">
+
+						<label class="control-label" for="firstName">First Name</label> <br />						
+							<input
+							id="firstName" name="firstName" type="text"
+							placeholder="50 chars. max" required
+							class="form-control input-md">
+
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label" for="phone">Phone</label> <input
+							id="phone" name="phone" type="text" placeholder="(999) 999-999"
+							class="form-control input-md">
+					</div>
+				</div>
+
+
+				<!-- Text input-->
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label" for="email">Email</label> <input
+							id="email" name="email" type="text"
+							placeholder="john.doe@mail.com" class="form-control input-md">
+					</div>
+				</div>
+				<!-- Text input-->
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label" for="purchaseDate">Purchase
+							Date</label>
+
+
+						<div class="input-group date">
+							<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+								type="text" class="form-control" id="purchaseDate"
+								name="purchaseDate" required value="03/04/2014"
+								th:value="${ #dates.format(new java.util.Date(), 'MM/dd/yyyy')}">
+						</div>
+
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="form-group">
+						
+						 <div class="col-sm-12">                                       
+                               
+							<label class="control-label" for="date">Payment Type</label> 
+							<div class="checkbox-group required">
+                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType"	value="CC" name="paymentType"> <i></i> Credit Card </label></span>
+                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType"	value="Cash"  name="paymentType"> <i></i> Cash </label></span>                                                             
+                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType"	value="Mail Chk"  name="paymentType"> <i></i> Mail Chk. </label></span>
+                               <span class="i-checks checkbox"><label> <input type="checkbox" id="paymentType"	value="Other"  name="paymentType"> <i></i> Other </label></span>
+                             </div>                               
+						 </div>							
+						
+						<!-- 
+						<input
+							id="paymentType" name="paymentType" required type="text"
+							placeholder="CC, Cash, Visa, Mail Chk, etc"
+							class="form-control input-md">
+						 -->	
+					</div>
+				</div>
+
+			</div>
+			<div class="row">
+
+				<div class="col-md-12">
+					<div class="hr-line-dashed"></div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="message">Address</label>
+						<textarea id="address" name="address" style="height: 105px"
+							class="form-control" required></textarea>
+					</div>
+				</div>
+				
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="zipcode">Zip Code</label> 
+						<input id="zipcode" name="zipcode" type="text" placeholder="" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="city">City</label> 
+						<input id="city" name="city" 	type="text" placeholder="" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="state">State</label> 
+						<input id="state" name="state" type="text" placeholder="" class="form-control input-md">
+					</div>
+				</div>
+
+				
+
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="message">Memo</label>
+						<textarea id="memo" name="memo" class="form-control" ></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="hr-line-dashed"></div>
+
+			<div class="form-group">
+				<div class="col-sm-4 col-sm-offset-4">
+					<button id="cancel-ticket-form" class="btn btn-white" type="button">Clear</button>
+					<button id="save-ticket" class="btn btn-primary" type="submit">Save and New Ticket</button>
+				</div>
+			</div>
+		
+		</form>
+		<!-- form end -->
+	</div>
+</body>
+</html>

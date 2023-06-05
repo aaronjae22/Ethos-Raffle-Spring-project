@@ -1,0 +1,80 @@
+	<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div th:fragment="main-form">
+
+		<div class="well-title">
+			<h2 style="margin-top: 0px">Edit Contact</h2>
+		</div>
+		
+		<form class="form-horizontal edit-contact-form" >
+             
+             <input type="hidden" name="idContact" th:value="${model.idContact}" />
+             
+             <div class="form-group"><label class="col-lg-3 control-label">First Name:</label>
+                 <div class="col-lg-9"><input type="text" placeholder="First name" name="firstName" class="form-control" th:value="${ model.firstName }"  /> 
+                 </div>
+             </div>
+             
+             <div class="form-group"><label class="col-lg-3 control-label">Last Name:</label>
+                 <div class="col-lg-9"><input type="text" name="lastName" placeholder="Last name" class="form-control" th:value="${ model.lastName }"> 
+                 </div>
+             </div>
+             
+             <div class="form-group"><label class="col-lg-3 control-label">Email:</label>
+                 <div class="col-lg-9"><input type="email" name="email" placeholder="Email" class="form-control" th:value="${ model.email }"> 
+                 </div>
+             </div>
+             
+             
+             <div class="form-group"><label class="col-lg-3 control-label">Phone:</label>
+                 <div class="col-lg-9"><input type="text" name="phone" placeholder="Phone" class="form-control" th:value="${ model.phone }"> 
+                 </div>
+             </div>
+             
+             <div class="form-group"><label class="col-lg-3 control-label">Address:</label>
+                 <div class="col-lg-9"><input type="text" name="address" placeholder="Address" class="form-control" th:value="${ model.address }"> 
+                 </div>
+             </div>
+             
+             <div class="form-group"><label class="col-lg-3 control-label">Zipcode:</label>
+                 <div class="col-lg-9"><input type="text" name="zipcode" placeholder="zipcode" class="form-control " th:value="${ model.zipCode }"> 
+                 </div>
+             </div>
+             
+             
+             <div class="form-group"><label class="col-lg-3 control-label">State:</label>
+                 <div class="col-lg-9"><input type="text" name="state" placeholder="State" class="form-control" th:value="${ model.state }"> 
+                 </div>
+             </div>
+             
+             <div class="form-group"><label class="col-lg-3 control-label">City:</label>
+                 <div class="col-lg-9"><input type="text" name="city" placeholder="City" class="form-control" th:value="${ model.city }"> 
+                 </div>
+             </div>
+             
+         </form>		
+				
+		
+		<!-- form end -->
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

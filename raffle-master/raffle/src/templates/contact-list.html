@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/main}">
+<!--/* Title of this template will be passed to the head fragment along with custom links and scripts */-->
+<head>
+
+	
+
+</head>
+<body>
+
+	<div layout:fragment="content">		
+
+		<style type="text/css">
+		
+			.row-actions
+			{
+				visibility: hidden; 	
+			}
+			.contact-row:hover .row-actions
+			{
+				visibility: visible;
+			}
+			
+			#filters-row .form-control 
+			{
+				width: 100%;
+			}
+			
+			.client-avatar
+			{
+				font-size: 20px;
+				color: balck;
+			}
+		
+			.view-calls-button i
+			{
+				font-size: 18px;
+			}
+			
+			.edit-contact-button
+			{
+				visibility: hidden;
+			}
+			
+			.contact-row:hover .edit-contact-button
+			{
+				visibility: visible;
+			}
+			
+		</style>
+		
+        <div class=" animated fadeInRight">	
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <span class="text-muted small pull-right hidden">Last modification: <i class="fa fa-clock-o"></i> 2:10 pm - 12.06.2014</span>
+                            <h2>Contact List</h2>
+                             <p>                               
+                                Showing the contacts who have bought tickets in any Period(Year).                                
+                            </p>
+                            
+                            
+                            <div class="row">
+                            	<div class="col-sm-12">
+		                          
+		                           <form role="form" class="">
+		                           		<div class=row>
+		                           			<div class="col-sm-3">
+				                                <div class="form-group">
+				                                    <label for="firstNameInput" class="">First Name:</label>
+				                                    <input type="text" placeholder="First name" id="firstNameInput" class="form-control">
+				                                </div>		                           			
+		                           			</div>
+		                           				<div class="col-sm-3">
+				                                <div class="form-group">
+				                                    <label for="lastNameInput" class="">Last Name:</label>
+				                                    <input type="text" placeholder="Last name" id="lastNameInput" class="form-control">
+					                                </div>
+			                           			</div>
+			                           			
+			                           			<div class="col-sm-3">
+				                           			<div class="form-group">
+				                           				<br />
+						                                <button id="search-button" class="btn btn-success" type="button"><i class="fa fa-search"></i> &nbsp;Search</button>
+						                                
+						                                <a id="exportCalls" href="../contact/download-contact-calls" class="btn btn-success" type="button"><i class="fa fa-download"></i>&nbsp;Export Calls</a>
+						                                
+						                            </div>
+			                           			</div>
+		                           		</div>
+		                                
+		                                
+		                            </form>
+		                            
+                            	</div>
+                            </div>
+                            
+                            
+                            <div class="clients-list">
+                            <ul class="nav nav-tabs hidden">
+                                <span class="pull-right small text-muted hidden">1406 Elements</span>
+                                <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i> Contacts</a></li>
+                                
+                                
+                                <li class="hidden"><a data-toggle="tab" href="#tab-2"><i class="fa fa-phone"></i> Call Log</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <div class="full-height-scroll">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover">
+                                                <tbody id="rows-container">
+                                                
+                                                <tr th:if="${ #lists.size(contactList) == 0 }">
+                                                
+                                                	<td colspan="5" align="center">
+                                                	
+                                                		<h1>0 contacts found! </h3>
+                                                		<h4>Try with other filters!</h4>
+                                                	</td>
+                                                
+                                                </tr>
+                                                
+                                                <tr class="contact-row" th:each="contact : ${contactList} "  th:if="${ #lists.size(contactList) > 0 }" >
+                                                	<td>
+	                                                	<span class="edit-contact-button" style="font-size:18px;" th:data-id-contact="${ contact.idContact }">
+			                                            	<a href="#edit" class="text-success" title="Edit Contact Information" >
+			                                            		<i class="fa fa-pencil"></i>
+			                                            	</a>
+			                                            </span>	                                               	
+                                                	</td>
+                                                    <td class="client-avatar">                                                     		
+                                                    		<i class="fa fa-user"></i>                                                    		
+                                                    </td>
+                                                    <td><a data-toggle="tab" href="#contact-1" th:text="${contact.firstName + ' '+ contact.lastName}" class="client-link">Anthony Jackson</a></td>
+                                                    <td>                                                     
+	                                                    <div class='email-span' th:if="${ not #strings.isEmpty(contact.email) }">
+		                                                    <i class="fa fa-envelope"> </i>
+		                                                    <span th:text="${#strings.defaultString( contact.email,'')}">gravida@rbisit.com</span>
+	                                                    </div>
+	                                                    
+	                                                    <div class="phone-span" th:if="${ not #strings.isEmpty(contact.email) }">
+		                                                    <i class="fa fa-phone"> </i>
+		                                                    <span th:text="${ #strings.defaultString( contact.phone,'')}">(555)-5555987</span>
+	                                                    </div>
+                                                    
+                                                    </td>
+                                                    
+                                                    
+                                                    <td> 
+                                                    	<i class="fa fa-map-marker"></i> &nbsp;<span th:text=" ${ #strings.defaultString( contact.address,' **N/A**' ) }">Tellus Institute</span>
+                                                    </td>
+                                                    
+                                                    
+                                                    <td>
+                                                    	<div class='city-span' th:if="${ not (#strings.isEmpty(contact.city) && #strings.isEmpty(contact.state)) }">
+		                                                    <i class="fa fa-map-marker"> </i>
+		                                                    <span th:text="${#strings.defaultString(contact.city,'') + ', ' + #strings.defaultString(contact.state,'')}">DC, WASHINGTON</span>
+		                                                    <br/>
+		                                                    &nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${#strings.defaultString(contact.zipCode,'')}">20002</span>
+	                                                    </div>
+	                                                    
+                                                    </td>
+                                                    <td >
+															<div class="row-actions">
+						                               	 		<button title="Add Contact Call" th:data-contact-id="${ contact.idContact }" class="btn btn-info btn-circle view-calls-button" type="button"><i class="fa fa-phone"></i>
+						                          			  	</button>                          			  	
+						                                	</div>                                                    	
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                            </div>
+								
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ibox ">
+                        <div class="ibox-content" id="contact-detail-container">
+                        
+                       	<div id="contact-detail-empty" >
+                       		<div class="middle-box text-center animated fadeInRightBig">
+			                    <h2 class="font-bold">Please select a contact!</h2>
+			                    
+			                    <div class="error-desc" style="font-size:16px;">
+			                        To view more information of a Contact, <br /> please select a contact from the Contact List!			                        
+			                    </div>
+			                    <br /><br />
+			                    <h4><a href="#"><i class="fa fa-hand-o-left" style="font-size:50px"></i></a></h4>
+			                </div>
+                       		<br /><br /><br /><br /><br /><br /><br />
+                       	</div>
+                       	
+                        <div id="contact-detail-container" style="display: none">                        	
+                        
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        	
+	</div> 
+
+	<div layout:fragment="footerScripts"  >
+		
+		
+		<link href="../../../WebContent/resources/css/plugins/iCheck/custom.css" rel="stylesheet"				th:href="@{/resources/css/plugins/iCheck/custom.css}">
+		<script src="../../../WebContent/resources/js/plugins/iCkeck/icheck.min.js"			th:src="@{/resources/js/plugins/iCheck/icheck.min.js}"></script>
+		
+		<script src="../../../WebContent/resources/js/app/contact.js"			th:src="@{/resources/js/app/contact.js?v=1.1}"	></script>
+			
+		<script src="../../../WebContent/resources/js/app/contact-edit.js"			th:src="@{/resources/js/app/contact-edit.js?v=1.1}"	></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js" ></script>	
+				
+				 
+				
+		<script>
+
+		var basePath = '[[@{/}]]';
+		
+		initializeEvents(basePath);
+
+
+		initializeEditContactForm(basePath,function(){
+
+			$("#search-button").click();
+
+		});
+		
+		
+		</script>
+		
+				
+	</div>
+			
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+ <div class="tab-content animated fadeInRight"  th:with="contact=${model.contactInformation}"  xmlns:th="http://www.thymeleaf.org">
+     <div id="contact-1" class="tab-pane active">
+         <div class="row m-b-lg">
+             <div class="col-lg-4 text-center">
+                 <h2 id="contact-name-label" th:text="${contact.firstName +' '+contact.lastName}" >Nicki Smith</h2>
+
+                 <div class="m-b-sm">
+                     <i class="fa fa-user" style="font-size:60px"></i>
+                 </div>
+             </div>
+             <div class="col-lg-8">
+             
+             	<br /><br />
+                 <strong class="hidden">
+                    	Register a call for this contact
+                 </strong>
+
+                 <button type="button" class="btn btn-primary btn-block btn-lg add-call-button"  th:data-contact-id="${contact.idContact}" ><i
+                         class="fa fa-phone"></i> Add Call
+                 </button>
+             </div>
+         </div>
+         <div class="client-detail">
+         <div class="full-height-scroll">
+			 
+             <strong>Call Activity</strong>
+             
+             <div th:if="${ #lists.size(model.contactCallList) == 0}" >                
+              	<div class="alert alert-warning">
+                              No call log for this Contact. <a class="alert-link pull-right" onclick="addNewCallHandler();" href="#">Click here to Add a Call</a>
+				</div>
+            </div>
+                
+             <div th:if="${ #lists.size(model.contactCallList) > 0}" id="vertical-timeline" class="vertical-container dark-timeline">                
+                 <div  class="vertical-timeline-block" th:each="callInfo : ${model.contactCallList}">
+                     <div class="vertical-timeline-icon gray-bg">
+                         <i class="fa fa-phone"></i>
+                     </div>
+                     <div class="vertical-timeline-content">
+                         <p><b><span th:text="${callInfo.createdByUser}">Harry Gutierrez</span></b> has make communication with this contact.<br /><span class="pull-right"> Follow Up: <b><span th:text="${callInfo.followUpCall}">Call me later</span></b></span>
+                         </p>                          
+                        		 <blockquote>
+                                    <p th:text="${ #strings.defaultString( callInfo.memo,'**No memo specified**')}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                                    <small><strong th:text='${callInfo.createdByUser}'>Author name</strong> at <cite th:text="${ #dates.format(callInfo.createdOn,'MMMM dd, yyyy HH:mm a') }">Book name</cite></small>
+                                </blockquote>
+                         
+                         <span class="vertical-date small text-muted hidden" th:text="${ #dates.format(callInfo.callDate,'MM dd,yyyy hh:mm' ) }"> 06:10 pm - 11.03.2014 </span>
+                     </div>
+                 </div>
+                 
+             </div>
+             <br />
+             <br />
+             <br />
+             <strong>Ticket purchase Summary</strong>
+             <p>
+                 This contact (<span th:text="${contact.firstName +' ' + contact.lastName }" >John Doe</span>) bought <b th:text="${ #lists.size( model.ticketPurchaseList)}"> 100</b> Ticket(s) for a total of <b>$<span th:text="${model.totalAmount}"></span> dollars!</b>
+             </p>
+             <hr/>
+             
+             
+             <div class="ticket-purchase-activity">
+	             <strong>Ticket Purchase Activity</strong>
+	
+	             <ul class="list-group clear-list">
+	                 <li th:each="purchase : ${model.ticketPurchaseList}" class="list-group-item">
+	                    <span class="pull-right">
+	                    	<span  th:text="${ #dates.format(purchase.purchaseDate,'MMM dd, yyyy') }" > 09:00 pm </span>
+	                    	(<span th:text="${'Period ' + purchase.period}">2018</span>)
+	                    </span> 
+	                     
+	                     <a href="#"><i class="fa fa-ticket"></i> <span th:text="${purchase.product}">Car</span> Ticket </a>&nbsp;&nbsp;&nbsp;#<span th:text="${purchase.ticketNumber}">9999999</span>	                     	                      
+	                 </li>
+	                 
+	             </ul>
+			</div>
+         </div>
+         </div>
+     </div>
+ </div>

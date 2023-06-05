@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<div class="ticket-counter-list" xmlns:th="http://www.thymeleaf.org">
+
+	<style>
+	
+	.date-range{
+	
+		font-weight: bolder;
+	
+	}
+	
+	.period-list-row:hover .set-active-period
+	{
+		visibility: visible;
+	}
+	
+	.period-list-row .set-active-period
+	{
+		visibility: hidden;
+	}
+	
+	</style>
+
+	<table class="table">
+        <thead>
+        
+        	<tr>
+        		<th>Period</th>
+        		<th>Date Range</th>
+        		<th>Active</th>
+        		
+        		<th>-</th>
+        		
+        	</tr>
+        </thead>
+        <tbody>
+	        <tr th:each=" period :  ${ periodList }" class="period-list-row" th:data-id="${period.idPeriod}" >
+	            <td ><span th:text="${ period.name }">2018</span></td>
+	            <td > From <span class="date-range" th:text="${period.beginDate}">01/01/2018</span> to <span class="date-range" th:text="${period.endDate}"></span></td>
+	            
+	            <td> <span th:text="${period.active ? 'Yes' : 'No'  }">No</span> </td>
+	            
+	            
+	            <td>	         
+	            	<button  th:if="${ not period.active } "  class="btn btn-primary set-active-period"  type="button"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;&nbsp;Set as Current Period</button>
+	             </td>
+	            
+	        </tr>        
+        </tbody>
+    </table>
+
+</div>

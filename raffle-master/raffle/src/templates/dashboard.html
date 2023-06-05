@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/main}">
+<!--/* Title of this template will be passed to the head fragment along with custom links and scripts */-->
+<head>
+</head>
+<body>
+
+	
+
+	<!--/* Insert content fragment with content of the element with id = 'task-details' */-->
+	<div layout:fragment="content">		
+	
+		<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" >
+		
+		
+			<style type="text/css">
+			
+				.wrapper.wrapper-content
+				{
+					padding-left: 10px		!important;
+					padding-right: 10px		!important;
+					padding-top: 5px		!important;
+				}
+				.container
+				{
+					width: 100%;
+				}
+				
+				.amount-cell
+				{
+					text-align: right;
+				}
+				.well-block {
+				    background-color: #fff;
+				    border: 1px solid #e9e6e8;
+				    padding: 40px;
+				}
+				
+				.select2-results__option .list-group			
+				{
+					margin-bottom:  0px;
+					
+				}
+				
+				.select2-results__option .list-group-item
+				{
+					padding: 0px;
+					padding-left: 5px;
+				}
+				
+				#select2-last-name-select-results .select2-results__option
+				{
+					padding: 1px;
+					
+				}
+												  
+				#select2-last-name-select-results.select2-results__options
+				{
+					max-height: 300px !important;
+				}	
+				
+				#select2-last-name-select-results .select2-results__option--highlighted
+				{
+					background-color: #dce4ab !important;
+				}
+				
+				#select2-last-name-select-results .select2-results__option[aria-selected=true]
+				{
+				background-color: white;
+				}
+				
+				.select2-dropdown.bigdrop
+				{
+					width: 500px !important;
+					
+					min-height: 300px !important; 
+				}
+				
+				.form-content .ibox-content , .form-content .well-block
+				{
+					padding-top: 3px !important;
+				}
+				
+				
+				.form-content .ibox-content
+				{
+					height: 85vh;
+					overflow-y:scroll;
+				}
+				
+				
+				 .bigdrop.select2-container .select2-results {max-height: 600px;}
+       			 .bigdrop .select2-results {max-height: 600px;}
+
+			
+				.inactive-ticket
+				{
+					border-left:  15px #ed5565 solid !important;
+				}
+				
+				.regular-ticket
+				{
+					border-left: 15px solid #1ab394
+				}
+				
+				#filters-row-body .regular-ticket a
+				{
+					visibility: hidden;
+				} 
+				
+				#filters-row-body tr:hover .regular-ticket a
+				{
+					visibility: visible;
+				}
+				
+				#filters-row-body tr:hover .details-ticket-button
+				{
+					visibility: visible !important;
+				}
+				
+				#filters-row-body tr:hover .inactive-ticket .delete-ticket-button
+				{
+					display: inline;	
+				}
+				
+				.inactive-ticket .delete-ticket-button
+				{
+					 
+					display: none;
+					
+				}
+				.inactive-ticket .edit-ticket-button
+				{
+					 
+					display: none;
+					
+				}
+				 
+				.inactive-ticket .details-ticket-button
+				{
+					visibility: hidden;
+				}
+				
+				#ticketsTable .form-control
+				{
+					width: 70px;
+					
+					padding-left: 2px;
+					padding-right: 2px;
+				}
+				
+				.period-box .m-t-lg
+				{
+					margin-top: 0px;
+				}
+				
+				.winner-ticket-label a
+				{
+					visibility: visible !important;
+				}
+				
+				
+				.edit-contact-button
+				{
+					visibility: hidden;
+				
+				}
+				
+				#filters-row-body tr:hover .edit-contact-button
+				{
+					visibility: visible;
+				}
+				
+			</style>
+			
+			<div class="container">
+	            <div class="row">
+	                 
+	                 <div class="col-md-offset-1 col-md-4">
+	                    <div class="ibox float-e-margins">
+	                        <div class="ibox-title">
+	                            <span class="label label-primary pull-right" th:text="${ totalAmounts.Period }" >By Product</span>
+	                            <h5>Ticket counter by Product</h5>
+	                        </div>
+	                        <div class="ibox-content">
+	
+	                            <div class="row">
+	                                <div class="col-md-3">
+	                                    <h2 id="counterBundle" class="no-margins counter-label" th:text="${ #numbers.formatDecimal(totalAmounts.totalCountBundle, 0, 'COMMA', 0, 'POINT')  }">1,200</h2>
+	                                    <div class="font-bold text-navy ">
+	                                    
+	                                     <i class="fa fa-ticket"></i> <small th:text="${ 'BUNDLE' }">Rapid pace</small></div>
+	                                </div>
+	                                
+	                                
+	                                <div class="col-md-3">
+	                                    <h2 id="counterCar" class="no-margins counter-label" th:text="${ #numbers.formatDecimal(totalAmounts.totalCountCar, 0, 'COMMA', 0, 'POINT')  }">1,200</h2>
+	                                    <div class="font-bold text-navy ">
+	                                    <i class="fa fa-ticket"></i> <small th:text="${ 'CAR' }">Rapid pace</small></div>
+	                                </div>
+	                                	  
+	                                	  
+	                               	<div class="col-md-3">
+	                                    <h2 id="counterVac" class="no-margins counter-label" th:text="${ #numbers.formatDecimal(totalAmounts.totalCountVac, 0, 'COMMA', 0, 'POINT')  }">1,200</h2>
+	                                    <div class="font-bold text-navy "><i class="fa fa-ticket"></i> <small th:text="${ 'VACACTION' }">Rapid pace</small></div>
+	                                </div>                
+	                                
+	                                <div class="col-md-3">
+	                                	<button class="btn btn-primary" id="view-counter-week" type="button"><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;By Week</button>
+	                                </div>           
+	                            </div>
+	
+	
+	                        </div>
+	                    </div>
+	                </div>
+	                 
+	                 
+	                 
+	                <div class="col-md-4">
+	                    <div class="ibox float-e-margins">
+	                        <div class="ibox-title">
+	                            <span class="label label-primary pull-right" th:text="${ totalAmounts.Period }" >By Product</span>
+	                            <h5>Amounts by Product</h5>
+	                        </div>
+	                        <div class="ibox-content">
+	
+	                            <div class="row">
+	                                <div class="col-md-4">
+	                                    <h2 id="totalCar"  class="no-margins counter-label" th:text="${ '$ ' +  #numbers.formatDecimal(totalAmounts.totalCar, 0, 'COMMA', 2, 'POINT')  }">$ 406,420</h2>
+	                                    <div class="font-bold text-navy "><i class="fa fa-level-up"></i> <small th:text="${ 'CAR' }">Rapid pace</small></div>
+	                                </div>
+	                              
+	                              <div class="col-md-4">
+	                                    <h2 id="totalVac" class="no-margins counter-label" th:text="${ '$ ' +  #numbers.formatDecimal(totalAmounts.totalVac, 0, 'COMMA', 2, 'POINT')  }">$ 406,420</h2>
+	                                    <div class="font-bold text-navy "><i class="fa fa-level-up"></i> <small th:text="${ 'VAC' }">Rapid pace</small></div>
+	                                </div>
+	                                
+	                                <div class="col-md-4">
+	                                    <h2 id="totalBundle" class="no-margins counter-label" th:text="${ '$ ' +  #numbers.formatDecimal(totalAmounts.totalBundle, 0, 'COMMA', 2, 'POINT')  }">$ 406,420</h2>
+	                                    <div class="font-bold text-navy " ><i class="fa fa-level-up"></i> <small th:text="${ 'BUN' }">Rapid pace</small></div>
+	                                </div>
+	                            </div>
+	
+	
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-md-3" >
+	                    <div class="ibox float-e-margins period-box">
+	                        <div class="ibox-title">
+	                            <h5>Displaying Period</h5>
+	                            <div class="ibox-tools">
+	                                
+	                            </div>
+	                        </div>
+	                        <div class="ibox-content no-padding">
+	                            <div class="m-t-lg" >
+	                                
+	                               <div class="form-group">
+	                               
+	                               <label class="col-sm-2 control-label">Select Period: </label>
+
+                                    <div class="col-sm-10">
+	                                    <select class="form-control m-b" id="period-select" name="period"  >
+	                                        
+	                                        <option th:if="${false}">option 1</option>	                                        
+	                                        <option th:each="period: ${availablePeriods}" th:selected="${period.idPeriod == periodToUseId}" th:value="${period.idPeriod}" th:text="${period.name + ' ' + (period.active? ' -- (Current)' : '') }">Option 1</option>
+	                                        
+	                                    </select>
+                                        
+                                    </div>
+                                </div>
+                                
+                                <div th:if="${ loggedUser.administrator }" class="pull-right">
+	                                <a href="javascript:void(0)" id="change-period-button" >Change Current Period</a>
+                                </div>
+                                
+                                <div style="clear:both;"></div>
+		                            
+	                            </div>
+	                        </div>
+	
+	                    </div>
+	                </div>
+	            </div>
+	                <div class="row hidden">
+	                    <div class="col-lg-8 col-md-offset-2">
+	                        <div class="ibox float-e-margins">
+	                            <div class="ibox-content">
+	                                <div>
+	                                        <span class="pull-right text-right">
+	                                        <small>Average value of sales in the past month in: <strong>United states</strong></small>
+	                                            <br>
+	                                            All sales: 162,862
+	                                        </span>
+	                                    <h3 class="font-bold no-margins">
+	                                        Half-year revenue margin
+	                                    </h3>
+	                                    <small>Sales marketing.</small>
+	                                </div>
+	
+	                                <div class="m-t-sm">
+	
+	                                    <div class="row">
+	                                        <div class="col-md-8">
+	                                            <div>
+	                                            <canvas id="lineChart" height="175" width="463" style="width: 463px; height: 175px;"></canvas>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-md-4">
+	                                            <ul class="stat-list m-t-lg">
+	                                                <li>
+	                                                    <h2 class="no-margins">2,346</h2>
+	                                                    <small>Total orders in period</small>
+	                                                    <div class="progress progress-mini">
+	                                                        <div class="progress-bar" style="width: 48%;"></div>
+	                                                    </div>
+	                                                </li>
+	                                                <li>
+	                                                    <h2 class="no-margins ">4,422</h2>
+	                                                    <small>Orders in last month</small>
+	                                                    <div class="progress progress-mini">
+	                                                        <div class="progress-bar" style="width: 60%;"></div>
+	                                                    </div>
+	                                                </li>
+	                                            </ul>
+	                                        </div>
+	                                    </div>
+	
+	                                </div>
+	
+	                                <div class="m-t-md">
+	                                    <small class="pull-right">
+	                                        <i class="fa fa-clock-o"> </i>
+	                                        Update on 01.09.2017
+	                                    </small>
+	                                    <small>
+	                                        <strong>Analysis of sales:</strong> The value has been changed over time, and last month reached a level over $50,000.
+	                                    </small>
+	                                </div>
+	
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="col-lg-4 hidden">
+	                        <div class="ibox float-e-margins">
+	                            <div class="ibox-title">
+	                                <span class="label label-warning pull-right">Data has changed</span>
+	                                <h5>User activity</h5>
+	                            </div>
+	                            <div class="ibox-content">
+	                                <div class="row">
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">Pages / Visit</small>
+	                                        <h4>236 321.80</h4>
+	                                    </div>
+	
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">% New Visits</small>
+	                                        <h4>46.11%</h4>
+	                                    </div>
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">Last week</small>
+	                                        <h4>432.021</h4>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="ibox-content">
+	                                <div class="row">
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">Pages / Visit</small>
+	                                        <h4>643 321.10</h4>
+	                                    </div>
+	
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">% New Visits</small>
+	                                        <h4>92.43%</h4>
+	                                    </div>
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">Last week</small>
+	                                        <h4>564.554</h4>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="ibox-content">
+	                                <div class="row">
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">Pages / Visit</small>
+	                                        <h4>436 547.20</h4>
+	                                    </div>
+	
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">% New Visits</small>
+	                                        <h4>150.23%</h4>
+	                                    </div>
+	                                    <div class="col-xs-4">
+	                                        <small class="stats-label">Last week</small>
+	                                        <h4>124.990</h4>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	
+	                </div>
+	
+	                <div class="row">
+	
+	                    <div class="col-lg-12">
+	                        <div class="ibox float-e-margins">
+	                            <div class="ibox-title">
+	                                <h5>Ticket List </h5>
+	                                <div class="ibox-tools">
+	                                    <a class="collapse-link">
+	                                        <i class="fa fa-chevron-up"></i>
+	                                    </a>
+	                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                                        <i class="fa fa-wrench"></i>
+	                                    </a>
+	                                    <ul class="dropdown-menu dropdown-user">
+	                                        <li><a href="#">Config option 1</a>
+	                                        </li>
+	                                        <li><a href="#">Config option 2</a>
+	                                        </li>
+	                                    </ul>
+	                                    <a class="close-link">
+	                                        <i class="fa fa-times"></i>
+	                                    </a>
+	                                </div>
+	                            </div>
+	                            <div class="ibox-content">
+	                                <div class="row">
+	                                    <div class="col-sm-9 m-b-xs">
+	                                    
+	                                        <div data-toggle="buttons" class="btn-group hidden" >
+	                                            <label class="btn btn-sm btn-white"> <input type="radio" id="option1" name="options"> Day </label>
+	                                            <label class="btn btn-sm btn-white active"> <input type="radio" id="option2" name="options"> Week </label>
+	                                            <label class="btn btn-sm btn-white"> <input type="radio" id="option3" name="options"> Month </label>
+	                                        </div>
+	                                        
+	                                        
+	                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                        
+	                                        <button id="addNewTicket" class="btn btn-primary " type="button" th:if="${ isCurrentPeriod }"  ><i class="fa fa-plus"></i>&nbsp;Add Ticket</button>
+	                                        
+	                                        <button id="toggleFilters" class="btn btn-success" type="button"><i class="fa fa-filter"></i>&nbsp;Filters</button>	                                        
+	                                        <div style="width:100px; display:inline-block;" ></div>	                                        
+	                                        <button id="exportTickets"  class="btn btn-success" type="button"><i class="fa fa-download"></i>&nbsp;Export Tickets</button>
+	                                        
+	                                        
+	                                        <button id="exportContacts"  class="btn btn-success" type="button"><i class="fa fa-download"></i>&nbsp;Export Contacts</button>
+	                                        
+	                                    </div>
+	                                    <div class="col-sm-3">
+	                                        <div class="input-group"><input  id="searchTextInput" type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+	                                        <button type="button" id="searchButton" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+	                                    </div>
+	                                </div>
+	                                
+	                             
+	                                <div class="table-responsive ">
+		                                <div id="ticketsTable-container">
+		                               
+		                                    <table id="ticketsTable" class="table table-striped">
+		                                        <thead>
+		                                        <tr>
+		                                        	<th></th>	
+													<th>BUN</th>
+													<th>CAR</th>
+													<th>VAC</th>
+		                                            <th>FIRST</th>
+		                                            <th>LAST</th>
+		                                            <th>ADDRESS</th>
+		                                            <th>CITY</th>
+		                                            <th>STATE</th>
+		                                            <th>ZIPCODE</th>
+		                                            <th>Phone</th>
+		                                            <th>DATE</th>
+		                                                                                        
+		                                            <th>PAYTYPE</th>
+		                                            <th>E-MAIL</th>
+		                                            <th>BUN&nbsp;$$</th>
+		                                            <th>CAR&nbsp;$$</th>
+		                                            <th>TRIP&nbsp;$$</th>
+		                                            
+		                                            <th>Total</th>
+		                                        </tr>
+		                                        
+		                                        <tr id="filters-row" class="hidden">	
+		                                   			<td></td>
+													<td><input type="text" data-id="fs_bundleNumber" value="" placeholder="" class="form-control input-sm"></td>
+													<td><input type="text" data-id="fs_carNumber"  value="" placeholder="" class="form-control input-sm"></td>
+													<td><input type="text" data-id="fs_vacationNumber"  value="" placeholder="" class="form-control input-sm"></td>
+		                                            
+		                                            <td><input type="text" data-id="fs_firstName"  value="" placeholder="" class="form-control input-sm"></td>
+		                                            <td><input type="text" data-id="fs_lastName"  value="" placeholder="" class="form-control input-sm"></td>
+		                                            
+		                                            <td><input type="text" data-id="fs_address"  value="" placeholder="" class="form-control input-sm hidden"></td>
+		                                            <td><input type="text" data-id="fs_city"  value="" placeholder="" class="form-control input-sm hidden"></td>
+		                                            <td><input type="text" data-id="fs_state"  value="" placeholder="" class="form-control input-sm hidden"></td>
+		                                            <td><input type="text" data-id="fs_zipcode"  value="" placeholder="" class="form-control input-sm hidden"></td>
+		                                            <td><input type="text" data-id="fs_phone"  value="" placeholder="" class="form-control input-sm hidden"></td>
+		                                            <td><input type="text" data-id="fs_purchaseDate"  value="" placeholder="" class="form-control input-sm hidden"></td>	                                                                                        
+		                                            <td><input type="text" data-id="fs_paymentType"  value="" placeholder="" class="form-control input-sm hidden"></td>
+		                                            <td><input type="text" data-id="fs_email"  value="" placeholder="" class="form-control input-sm hidden"></td>
+		                                            <td></td>
+		                                            <td></td>
+		                                            <td></td>
+		                                            <td></td>
+		                                        </tr>
+		                                        
+		                                        
+		                                        </thead>
+		                                        <tbody id="filters-row-body"
+		                                        
+		                                        th:data-count-bundle="${totalAmounts.totalCountBundle}"
+			                                    th:data-count-car="${totalAmounts.totalCountCar}"
+			                                    th:data-count-vac="${totalAmounts.totalCountVac}"
+			                                    
+			                                    th:data-sum-bundle="${totalAmounts.totalBundle}"
+			                                    th:data-sum-car="${totalAmounts.totalCar}"
+			                                    th:data-sum-vac="${totalAmounts.totalVac}"
+		                                        >
+		                                        <tr th:each="ticket : ${ticketList}">
+		                                            <td th:title="${ ticket.active ? '' : 'This ticket was deleted, the ticket number can be used!' }" th:class="${ ticket.active ? 'regular-ticket' : 'inactive-ticket' }"  th:data-id="${ ticket.idTicket }" >
+		                                            
+			                                            <span class="delete-ticket-button" th:if="${ ticket.idProduct < 5  }" style="font-size:18px;">
+			                                            	<a href="#void"  class="text-danger" title='Delete this ticket!'>
+			                                            		<i class="fa fa-trash"></i>
+			                                            	</a>
+			                                            </span>
+			                                            
+			                                            &nbsp;&nbsp;&nbsp;
+			                                            
+			                                            <span class="details-ticket-button" style="font-size:18px;">
+			                                            	<a href="#void"  class="text-success" title='View Details'>
+			                                            		<i class="fa fa-bars"></i>
+			                                            	</a>
+			                                            </span>
+			                                            
+			                                            &nbsp;&nbsp;&nbsp;
+			                                            
+			                                            <span class="edit-ticket-button" style="font-size:18px;">
+			                                            	<a href="#edit"  class="text-success" title='Edit ticket Information'>
+			                                            		<i class="fa fa-pencil"></i>
+			                                            	</a>
+			                                            </span>
+			                                            
+			                                             <span class="winner-ticket-label" th:if="${ ticket.active && ticket.IsWinner }" style="font-size:18px;">	                                            
+			                                            	&nbsp;&nbsp;&nbsp;	                                            
+			                                            	<a href="#winner"  style="color:#FFD700" title='This is a winner ticket!'>
+			                                            		<i class="fa fa-star"></i>
+			                                            	</a>
+			                                            </span>
+			                                            
+			                                            &nbsp;&nbsp;&nbsp;
+			                                             <span class="winner-ticket-button" th:if="${ ticket.active && !ticket.IsWinner }" style="font-size:18px;">
+			                                            	<a href="#winner"  class="text-success" title='Make this a Winner Ticket!'>
+			                                            		<i class="fa fa-star"></i>
+			                                            	</a>
+			                                            </span>
+			                                            
+		                                            
+		                                            </td>
+		                                            <td th:text="${  ticket.idProduct == 3 ?  ticket.ticketNumber : '' }" > 0.0 </td>                                                                                        
+		                                            <td th:text="${  ticket.idProduct == 1 ?  ticket.ticketNumber : '' }" > 0.0 </td>
+		                                            <td th:text="${  ticket.idProduct == 2 ?  ticket.ticketNumber : '' }" > 0.0 </td>
+		                                            
+		                                            <td  >
+		                                            	<span class="edit-contact-button" style="font-size:18px;" th:data-id-contact="${ ticket.idContact }">
+			                                            	<a href="#edit" class="text-success" title="Edit Contact Information" >
+			                                            		<i class="fa fa-pencil"></i>
+			                                            	</a>
+			                                            </span>
+			                                             		                                            			                                            
+		                                            	<span th:text="${	 ticket.firstName}">Patrick</span>
+		                                            </td>
+		                                            <td th:text="${	 ticket.lastName}"  >Smith</td>
+		                                            <td th:text="${	 ticket.address}" 	>205 Del Monte Lane</td>
+		                                            <td th:text="${	 ticket.city}" >Morgan Hill</td>
+		                                            
+		                                            <td th:text="${	 ticket.state}" >CA</td>
+		                                            <td th:text="${	 ticket.zipcode}" >95037</td>
+		                                            
+		                                            <td th:text="${	 ticket.phone}" >(408) 710-4316</td>
+		                                            <td th:text="${#dates.format(ticket.purchaseDate, 'dd-MMM-yyyy')}" >95037</td>
+		                                            
+		                                            <td th:text="${ ticket.paymentType }" >CASH</td>
+		                                            <td >
+			                                            <a href="mailto:ljcmreno@gmail.com" th:src="${ 'mailto:'+ticket.email }" th:text="${ticket.email}">
+				                                            ljcmoreno@gmail.com
+			                                            </a>
+		                                            </td>
+		                                            
+		                                            
+		                                            <td class="amount-cell" th:text="${  ticket.idProduct == 3 ? '$' + #numbers.formatDecimal(ticket.price, 0, 'COMMA', 2, 'POINT') : '' }" > $0.0 </td>                                                                                        
+		                                            <td class="amount-cell" th:text="${  ticket.idProduct == 1 ? '$' + #numbers.formatDecimal(ticket.price, 0, 'COMMA', 2, 'POINT') : '' }" > $0.0 </td>
+		                                            <td class="amount-cell" th:text="${  ticket.idProduct == 2 ? '$' + #numbers.formatDecimal(ticket.price, 0, 'COMMA', 2, 'POINT') : '' }" > $0.0 </td>
+		                                            
+		                                            <td class="amount-cell" th:text="${  '$' + #numbers.formatDecimal(ticket.price + ticket.tax, 0, 'COMMA', 2, 'POINT') }" > $0.0 </td>
+		                                            
+		                                            <!-- 
+		                                            <td>Patrick Smith</td>
+		                                            <td>0800 051213</td>
+		                                            <td>Inceptos Hymenaeos Ltd</td>
+		                                            <td><span class="pie" style="display: none;">0.52/1.561</span><svg class="peity" height="16" width="16"><path d="M 8 8 L 8 0 A 8 8 0 0 1 14.933563796318165 11.990700825968545 Z" fill="#1ab394"></path><path d="M 8 8 L 14.933563796318165 11.990700825968545 A 8 8 0 1 1 7.999999999999998 0 Z" fill="#d7d7d7"></path></svg></td>
+		                                            <td>20%</td>
+		                                            <td>Jul 14, 2017</td>
+		                                            <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
+		                                            -->
+		                                            
+		                                        </tr>
+		                                        </tbody>
+		                                        <tbody th:if="false">
+		                                        <tr>
+		                                            <td>2</td>
+		                                            <td>Alpha project</td>
+		                                            <td>Alice Jackson</td>
+		                                            <td>0500 780909</td>
+		                                            <td>Nec Euismod In Company</td>
+		                                            <td><span class="pie" style="display: none;">6,9</span><svg class="peity" height="16" width="16"><path d="M 8 8 L 8 0 A 8 8 0 0 1 12.702282018339785 14.47213595499958 Z" fill="#1ab394"></path><path d="M 8 8 L 12.702282018339785 14.47213595499958 A 8 8 0 1 1 7.999999999999998 0 Z" fill="#d7d7d7"></path></svg></td>
+		                                            <td>40%</td>
+		                                            <td>Jul 16, 2017</td>
+		                                            <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
+		                                        </tr>
+		                                   		</tbody>
+		                                    </table>
+		                                 </div>
+		                                 
+	                                	<div class="btn-group pull-right hidden">
+			                                <button type="button" class="btn btn-white"><i class="fa fa-chevron-left"></i></button>
+			                                <button class="btn btn-white">1</button>
+			                                <button class="btn btn-white  active">2</button>
+			                                <button class="btn btn-white">3</button>
+			                                <button class="btn btn-white">4</button>
+			                                <button type="button" class="btn btn-white"><i class="fa fa-chevron-right"></i> </button>
+			                            </div>
+	                                
+	                                </div>
+	
+	                            </div>
+	                        </div>
+	                    </div>
+	
+	                </div>
+	
+	            </div>
+			
+			
+			
+		<!--/* EDITOR PANEL */-->
+		<div>
+			<div  class="cd-panel cd-panel-right from-right size-50" >
+				<header class="cd-panel-header ">
+					<h1>Ticket Editor</h1>
+					<a href="#0" class="cd-panel-close">Close</a>
+				</header>
+				<div class="cd-panel-container form-content" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.1);">
+					<div class="cd-panel-content">
+						
+						
+						<div class="row">
+							
+							<div class="col-md-offset-0 col-lg-12">
+			                    <div class="ibox float-e-margins">
+			                       
+			                        <div class="ibox-content">
+			                            <div class="row">
+			                                
+			                                <div class="col-md-12">
+							                    <div class="well-block">
+							                    
+							                    	<div th:insert="~{ticket-form :: main-form}"></div>
+							                    
+							                       
+							                    </div>
+							                </div>
+							                
+								                <!-- 
+								               <div class="col-md-6">
+								                
+								                <div class="panel panel-default" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.1);">
+											        <div class="panel-body" style="margin-left: 10px;margin-right: 10px;">
+											          <p style="margin-bottom:10px;margin-top:10px">Jatiya Kabi Kazi Nazrul Islam University was established by the Government of Bangladesh on 01 March 2005, though the initiative for its establishment was taken some years before, firstly by a non-official group of socio-cultural local elites, namely Greater Mymensingh Cultural Forum. The university was originally conceived to be built as the first cultural university in Bangladesh, but the JKKNIU Act enacted in 2006 made it a general university with a special focus on liberal-cum-performing arts education and research. Jatiya Kabi Kazi Nazrul Islam University was established by the Government of Bangladesh on 01 March 2005, though the initiative for its establishment was taken some years before, firstly by a non-official group of socio-cultural local elites, namely Greater Mymensingh Cultural Forum. The university was originally conceived to be built as the first cultural university in Bangladesh, but the JKKNIU Act enacted in 2006 made it a general university with a special focus on liberal-cum-performing arts education and research. Jatiya Kabi Kazi Nazrul Islam University was established by the Government of Bangladesh on 01 March 2005, though the initiative for its establishment was taken some years before, firstly by a non-official group of socio-cultural local elites, namely Greater Mymensingh Cultural Forum. The university was originally conceived to be built as the first cultural university in Bangladesh, but the JKKNIU Act enacted in 2006 made it.</p>
+											          <button type="button" class="btn btn-success center-block">Learn More</button>
+											        </div>
+											      </div>
+				                                
+				                                </div>
+								                 -->
+			                                </div>
+			                                
+			                           
+			                        </div>
+			                    </div>
+			                </div>
+						
+						</div>
+						
+					</div> <!-- cd-panel-content -->
+				</div> <!-- cd-panel-container -->
+			</div> <!-- cd-panel -->
+		</div>
+		
+	</div> 
+
+	
+	
+	<div layout:fragment="footerScripts"  >
+		
+		<script src="../../../WebContent/resources/js/app/dashboard.js?v=1.3"			th:src="@{/resources/js/app/dashboard.js?v=1.3}"	></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js" ></script>
+		
+		
+		<link href="../../../WebContent/resources/css/plugins/iCheck/custom.css" rel="stylesheet"				th:href="@{/resources/css/plugins/iCheck/custom.css}">
+		<script src="../../../WebContent/resources/js/plugins/iCkeck/icheck.min.js"			th:src="@{/resources/js/plugins/iCheck/icheck.min.js}"></script>
+		
+		<script src="../../../WebContent/resources/js/plugins/validate/jquery.validate.min.js"			th:src="@{/resources/js/plugins/validate/jquery.validate.min.js}"></script>
+				
+		<script src="../../../WebContent/resources/js/app/contact-edit.js?v=1.1.1"			th:src="@{/resources/js/app/contact-edit.js?v=1.1.1}"	></script>
+		
+		<script>
+
+		var basePath = '[[@{/}]]';
+		initializeEvents(basePath);
+
+		initializeEditContactForm(basePath, function(){
+
+				$("#searchButton").click();
+			
+			});
+		
+		</script> 
+						
+	</div>
+			
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
