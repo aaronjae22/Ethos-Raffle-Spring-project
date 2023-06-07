@@ -4,12 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class AddTicketsFileController {
+public class ImportTicketsController {
 
-    @RequestMapping("add-tickets-file")
+    @RequestMapping("import-tickets")
     public String addTicketsFile() {
 
-        return "add-tickets-file";
+        return "import-tickets";
 
     }
 
