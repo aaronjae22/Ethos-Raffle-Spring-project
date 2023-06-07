@@ -1,11 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/main}">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Import tickets file</title>
+
 </head>
+
 <body>
-    <h1>Just testing code</h1>
+
+<div layout:fragment="content">
+
+    <style type="text/css">
+
+        .row-actions
+        {
+            visibility: hidden;
+        }
+
+        .user-row:hover .row-actions
+        {
+            visibility: visible;
+        }
+
+    </style>
+
+
+    <div class="container" id="table-container" th:if="${ loggedUser.administrator }" >
+
+        <div class="row">
+
+            <div class="col-offset-1 col-lg-10">
+
+                <!-- HEADERS AND SELECT FILE BUTTON -->
+                <div>
+                    <h1 class='pull-left' style="margin-top:0">Import Tickets</h1>
+                    <button type="button" class="btn btn-primary btn-lg pull-right ">Select file</button>
+                    <div style="clear: both;"></div>
+                </div>
+
+
+                <div class="ibox float-e-margins">
+
+                    <div class="ibox-content">
+
+                        <!-- HEADERS TABLE -->
+                        <table class="table" >
+                            <thead>
+                                <tr>
+                                    <th>BB</th>
+                                    <th>Car</th>
+                                    <th>Vacation</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NOT ADMINISTRATOR -->
+    <div th:if="${ ! loggedUser.administrator }" class="">
+
+        <div class="alert alert-warning">
+            <h1> You do not have Administration rights!</h1><br />
+            <a href="index.html" th:href="@{/dashboard/home}" class="btn btn-primary m-t">Dashboard</a>
+        </div>
+
+    </div>
+
+</div>
+
+<div layout:fragment="footerScripts"  >
+
+    <script src="../../../WebContent/resources/js/app/user-administration.js"			th:src="@{/resources/js/app/user-administration.js?v=1.1}"	></script>
+
+    <script>
+
+        var basePath = '[[@{/}]]';
+
+        initializeEvents(basePath);
+
+    </script>
+
+</div>
+
 </body>
+
 </html>
