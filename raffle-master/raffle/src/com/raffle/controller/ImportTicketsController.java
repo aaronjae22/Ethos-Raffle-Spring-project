@@ -1,8 +1,16 @@
 package com.raffle.controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.raffle.ImportTicketsHelper;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -13,31 +21,22 @@ import com.raffle.dao.UserDataAccess;
 import com.raffle.pojo.User;
 
 @Controller
-class ImportTicketsController extends BaseController
-{
+class ImportTicketsController extends BaseController {
 
     @Autowired
     UserDataAccess userDataAccess;
 
     @Secured("Administrator")
-    @RequestMapping(value ="import-tickets")
-    String viewList(Model model )
-    {
+    @RequestMapping(value = "import-tickets")
+    String importTickets() throws IOException {
 
-        // tatuList<User> userList;
-
-        if(this.hasRole("Administrator"))
-        {
-            // userList = userDataAccess.loadUsers() ;
-            System.out.println("It has permission");
-        }
-        else
-        {
-            // userList = new ArrayList<User>();
+        if (this.hasRole("Administrator")) {
+            Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\raffle-master\\raffle\\datafiles\\Excel_Import.xlsx");
+            ImportTicketsHelper.importTickets(path);
+        } else {
             System.out.println("It doesn't have permission");
         }
 
-        // model.addAttribute("userList", userList);
 
         return "import-tickets";
     }

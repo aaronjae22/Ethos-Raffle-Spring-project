@@ -32,5 +32,15 @@ public class TicketNumbers {
 	public void setIdProduct(int idProduct) {
 		this.idProduct = idProduct;
 	}
+
+	@Override
+	public String toString() {
+		return "TicketNumbers{" +
+				"idTicketNumbers=" + idTicketNumbers +
+				", idPeriod=" + idPeriod +
+				", ticketNumber='" + ticketNumber + '\'' +
+				", idProduct=" + idProduct +
+				'}';
+	}
 }
 

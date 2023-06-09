@@ -67,5 +67,19 @@ public class Ticket {
 	private int idUser;
 	private String paymentType;
 	private int idProduct;
-	
+
+	@Override
+	public String toString() {
+		return "Ticket{" +
+				"idTicket=" + idTicket +
+				", idPeriod=" + idPeriod +
+				", idContact=" + idContact +
+				", ticketNumber='" + ticketNumber + '\'' +
+				", purchaseDate=" + purchaseDate +
+				", creationDate=" + creationDate +
+				", idUser=" + idUser +
+				", paymentType='" + paymentType + '\'' +
+				", idProduct=" + idProduct +
+				'}';
+	}
 }
