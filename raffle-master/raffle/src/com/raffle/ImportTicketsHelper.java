@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class ImportTicketsHelper {
     public static void importTickets(Path path) throws IOException {
+
 
         String excelFilePath = String.valueOf(path);
         FileInputStream inputStream = new FileInputStream(excelFilePath);
@@ -48,26 +50,31 @@ public class ImportTicketsHelper {
 
                 if(cell.getColumnIndex() == 0 ) {
                     ticket.setIdTicketNumbers((int)cell.getNumericCellValue());
+                    ticket.setIdPeriod(12);
+                    ticket.setTicketNumber(String.valueOf(cell.getNumericCellValue()).split("\\.")[0]);
+                    ticket.setIdProduct(1); // Bundle
                 }
 
-                if(cell.getColumnIndex() == 1 ) {
-                    ticket.setIdProduct((int)cell.getNumericCellValue());
-                }
+                /* if(cell.getColumnIndex() == 1 ) {
+                    ticket.setIdTicketNumbers((int)cell.getNumericCellValue());
+                } */
 
-                if(cell.getColumnIndex() == 2 ) {
+                /* if(cell.getColumnIndex() == 2 ) {
                     ticket.setIdPeriod((int)cell.getNumericCellValue());
-                }
+                } */
             }
             ticketList.add(ticket);
         }
         // for(Ticket ticket : ticketList) {
         for(TicketNumbers ticket : ticketList) {
             System.out.println(ticket.getIdTicketNumbers());
-            System.out.println(ticket.getIdProduct());
-            System.out.println(ticket.getIdPeriod());
+            // System.out.println(ticket.getIdProduct());
+            // System.out.println(ticket.getIdPeriod());
             System.out.println(ticket);
             System.out.println();
         }
+
+
     }
 
     public static void main(String args[]) throws IOException {
