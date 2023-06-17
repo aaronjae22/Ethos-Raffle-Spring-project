@@ -15,7 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 					"main.java.hello",
 					"com.raffle.controller",
 					"com.raffle.dao",
-					"com.raffle.utilities.zipUtilities"})
+					"com.raffle.utilities.zipUtilities",
+                    "com.raffle"})
 @EnableAutoConfiguration
 //@SpringBootApplication
 

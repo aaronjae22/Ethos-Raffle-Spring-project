@@ -19,10 +19,16 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import com.raffle.dao.ImportTicketsDataAccess;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ImportTicketsHelper {
-    public static void importTickets(Path path) throws IOException {
 
+    @Autowired
+    ImportTicketsDataAccess importTicketsDataAccess;
+
+    public static List<TicketNumbers> importTickets(Path path) throws IOException {
 
         String excelFilePath = String.valueOf(path);
         FileInputStream inputStream = new FileInputStream(excelFilePath);
@@ -31,55 +37,52 @@ public class ImportTicketsHelper {
         XSSFSheet sheet = workbook.getSheet("Tickets");
 
         Iterator<Row> rows = sheet.iterator();
-        // List<Ticket> ticketList = new ArrayList<>();
         List<TicketNumbers> ticketList = new ArrayList<>();
 
         while(rows.hasNext()) {
+
             Row row = rows.next();
             if(row.getRowNum() < 2) continue;
 
             Iterator<Cell> cellIterator  = row.cellIterator();
-            // Ticket ticket = new Ticket();
-            TicketNumbers ticket = new TicketNumbers();
 
             while(cellIterator.hasNext()) {
+                TicketNumbers ticket = new TicketNumbers();
+                ticket.setIdPeriod(12);
+
                 Cell cell = cellIterator.next();
                 CellType type = CellType.forInt(cell.getCellType());
 
                 if(type != CellType.NUMERIC) continue;
 
-                if(cell.getColumnIndex() == 0 ) {
-                    ticket.setIdTicketNumbers((int)cell.getNumericCellValue());
-                    ticket.setIdPeriod(12);
-                    ticket.setTicketNumber(String.valueOf(cell.getNumericCellValue()).split("\\.")[0]);
-                    ticket.setIdProduct(1); // Bundle
-                }
+                int cellValue = (int)cell.getNumericCellValue();
 
-                /* if(cell.getColumnIndex() == 1 ) {
-                    ticket.setIdTicketNumbers((int)cell.getNumericCellValue());
-                } */
-
-                /* if(cell.getColumnIndex() == 2 ) {
-                    ticket.setIdPeriod((int)cell.getNumericCellValue());
-                } */
+                ticket.setIdTicketNumbers(cellValue);
+                ticket.setTicketNumber(String.valueOf(cellValue));
+                ticket.setIdProduct(cell.getColumnIndex()+1);
+                ticketList.add(ticket);
             }
-            ticketList.add(ticket);
-        }
-        // for(Ticket ticket : ticketList) {
-        for(TicketNumbers ticket : ticketList) {
-            System.out.println(ticket.getIdTicketNumbers());
-            // System.out.println(ticket.getIdProduct());
-            // System.out.println(ticket.getIdPeriod());
-            System.out.println(ticket);
-            System.out.println();
         }
 
+        return ticketList;
+    }
+
+    public void insertImportedTickets(List<TicketNumbers> importedTickets) {
+
+
+        // ImportTicketsDataAccess importTicketsDataAccess = new ImportTicketsDataAccess();
+        importedTickets.forEach( (ticket) -> {
+            importTicketsDataAccess.saveImportTicket(ticket);
+        });
 
     }
+
 
     public static void main(String args[]) throws IOException {
 
         Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\raffle-master\\raffle\\datafiles\\Excel_Import.xlsx");
-        importTickets(path);
+        // Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\db-files\\2019 Sweepstakes prep.xlsx");
+        List<TicketNumbers> ticketNumbers = importTickets(path);
+        System.out.println(ticketNumbers);
     }
 }
