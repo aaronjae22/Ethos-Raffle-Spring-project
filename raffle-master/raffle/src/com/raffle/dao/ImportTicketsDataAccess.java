@@ -21,7 +21,7 @@ public class ImportTicketsDataAccess extends BaseDataAccess {
 
     public void saveImportTicket(TicketNumbers ticket)
     {
-        String INSERT_SQL = "insert into ticket_numbers (idPeriod, ticket_number, idProduct)" +
+        String INSERT_SQL = "insert ignore into ticket_numbers (idPeriod, ticket_number, idProduct)" +
                 "values(?, ?, ?)";
 
         int currentPeriod = periodDataAccess.getCurrentPeriod(); // active = 1

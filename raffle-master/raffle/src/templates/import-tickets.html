@@ -35,27 +35,46 @@
                 <div>
                     <h1 class='pull-left' style="margin-top:0">Import Tickets</h1>
                     <button type="button" class="btn btn-primary btn-lg pull-right" style="font-size: 16px; margin-left: 10px">Select file</button>
-                    <button type="button" class="btn btn-primary btn-lg pull-right" style="font-size: 16px">Change Sheet</button>
+                    <button type="button" class="btn btn-primary btn-lg pull-right" onclick="tableVisibility()" style="font-size: 16px">Change Sheet</button>
                 </div>
 
 
                 <div class="ibox float-e-margins">
 
-                    <div class="ibox-content">
+                    <div class="ibox-content" id="single-ticket-table">
 
                         <!-- HEADERS TABLE -->
-                        <table class="table" >
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th>BB</th>
-                                    <th>Car</th>
-                                    <th>Vacation</th>
+                                    <th>Id</th>
+                                    <th>Ticket Number</th>
+                                    <th>Product</th>
+                                    <th>Period</th>
                                 </tr>
                             </thead>
                         </table>
 
+                    </div>
+
+
+                    <div class="ibox-content" id="bundle-ticket-table" style="display: none">
+
+                        <!-- HEADERS TABLE -->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Bundle Number</th>
+                                <th>Ticket Number</th>
+                                <th>Product</th>
+                                <th>Period</th>
+                            </tr>
+                            </thead>
+                        </table>
 
                     </div>
+
                 </div>
             </div>
 
@@ -86,7 +105,21 @@
 
         initializeEvents(basePath);
 
+        function tableVisibility() {
+
+
+            if (document.getElementById("single-ticket-table").style.display === "none") {
+                document.getElementById("single-ticket-table").style.display = "block";
+                document.getElementById("bundle-ticket-table").style.display = "none";
+            }
+            else {
+                document.getElementById("single-ticket-table").style.display = "none";
+                document.getElementById("bundle-ticket-table").style.display = "block";
+            }
+        }
+
     </script>
+
 
 </div>
 
