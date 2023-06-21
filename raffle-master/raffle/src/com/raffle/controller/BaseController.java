@@ -40,7 +40,7 @@ public class BaseController
 
         return false;
     }
-	
+
 	@ModelAttribute("loggedUser")
 	public User getLoggedUser() 
 	{

@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -13,7 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-@Component
+@Controller
 public class ImportTicketsDataAccess extends BaseDataAccess {
 
     @Autowired

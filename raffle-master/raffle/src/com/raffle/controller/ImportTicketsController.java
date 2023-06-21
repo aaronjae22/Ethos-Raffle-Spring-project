@@ -17,6 +17,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.raffle.dao.UserDataAccess;
@@ -35,18 +37,20 @@ class ImportTicketsController extends BaseController {
     @Transactional
     @Secured("Administrator")
     @RequestMapping(value = "import-tickets")
-    public String importTickets() throws IOException {
-
+    public String importTickets(Model model) throws IOException {
         if (this.hasRole("Administrator")) {
             Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\raffle-master\\raffle\\datafiles\\Excel_Import.xlsx");
             List<TicketNumbers> importedTickets = ImportTicketsHelper.importTickets(path);
+            System.out.println(importedTickets);
             importTicketsHelper.insertImportedTickets(importedTickets);
+            model.addAttribute("ticketList", importedTickets);
+
         } else {
             System.out.println("It doesn't have permission");
         }
-
-
         return "import-tickets";
     }
+
+
 
 }

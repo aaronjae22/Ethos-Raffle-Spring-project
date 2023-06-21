@@ -58,8 +58,6 @@ import com.raffle.util.GeneralResponse;
 	@RequestMapping({"/dashboard/home/{idPeriod}","/dashboard/home"})
 	String home(Model model , @PathVariable( value="idPeriod")  Optional<Integer> idPeriod)
 	{
-		
-		
 		int periodToUse = 0;
 		List<Period> periods = periodDataAccess.getPeriodList();
 				

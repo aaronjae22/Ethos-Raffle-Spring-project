@@ -42,17 +42,32 @@
                 <div class="ibox float-e-margins">
 
                     <div class="ibox-content" id="single-ticket-table">
+                        <h1 th:text="${ticketList.size()}"></h1>
 
                         <!-- HEADERS TABLE -->
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
+                                    <!-- <th>Id</th> -->
                                     <th>Ticket Number</th>
                                     <th>Product</th>
                                     <th>Period</th>
                                 </tr>
                             </thead>
+
+                            <tbody>
+
+                                <tr th:each="ticket : ${ticketList}">
+
+                                    <!-- <td th:text="${ticket.getIdTicketNumbers()}"></td> -->
+                                    <td th:text="${ticket.getIdTicketNumbers()}"></td>
+                                    <td th:text="${ticket.getIdProduct()}"></td>
+                                    <td th:text="${ticket.getIdProduct()}"></td>
+                                </tr>
+
+                            </tbody>
+
+
                         </table>
 
                     </div>
@@ -63,14 +78,15 @@
                         <!-- HEADERS TABLE -->
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Bundle Number</th>
-                                <th>Ticket Number</th>
-                                <th>Product</th>
-                                <th>Period</th>
-                            </tr>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Bundle Number</th>
+                                    <th>Ticket Number</th>
+                                    <th>Product</th>
+                                    <th>Period</th>
+                                </tr>
                             </thead>
+
                         </table>
 
                     </div>
