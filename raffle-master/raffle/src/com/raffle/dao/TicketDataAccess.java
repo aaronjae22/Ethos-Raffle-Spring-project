@@ -436,11 +436,10 @@ public class TicketDataAccess extends BaseDataAccess {
 		
 		HashMap<String,Object> params=  new HashMap<String,Object>();
 		params.put("idPeriod", idPeriod);
-		
-			params.put("ticketNumber", ticketNumber);			
+		params.put("ticketNumber", ticketNumber);
 			
 		List<BundleDetails> vals = namedJdbcTemplate.query(sql,params,new BundleDetailsMapper());
- 
+
 		return vals;
 		
 	}

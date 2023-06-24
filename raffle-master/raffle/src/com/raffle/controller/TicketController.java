@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.raffle.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.raffle.dao.ContactDataAccess;
 import com.raffle.dao.ProductDataAccess;
 import com.raffle.dao.TicketDataAccess;
-import com.raffle.pojo.BundleDetails;
-import com.raffle.pojo.Contact;
-import com.raffle.pojo.ProductEnum;
-import com.raffle.pojo.TicketCounterWeek;
-import com.raffle.pojo.TicketListItem;
-import com.raffle.pojo.TicketNumbers;
-import com.raffle.pojo.User;
 import com.raffle.util.GeneralResponse;
 import com.raffle.util.ProductsList;
 import com.raffle.utilities.zipUtilities.IZipCodeManager;
@@ -424,7 +418,7 @@ class TicketController extends BaseController {
 				
 				for(BundleDetails d : bundleDetails)
 				{
-					if(d.getIdProduct() == 1) //CAR TICKETS
+					if(d.getIdProduct() == Ticket.PRODUCT_ID_CAR) //CAR TICKETS
 						bundleTickets.getCarTickets().add(d.getTicketNumber());
 					else
 						bundleTickets.getVacTickets().add(d.getTicketNumber()); //VACATION TICKETS

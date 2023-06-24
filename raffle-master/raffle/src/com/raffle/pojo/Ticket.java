@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Ticket {
 
+	public final static int PRODUCT_ID_CAR = 1, PRODUCT_ID_VACATION = 2;
 	private int idTicket;
 	private int idPeriod;
 	private int idContact;

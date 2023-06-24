@@ -25,8 +25,8 @@ public class BundleDetailsMapper extends SqlMapperBase implements RowMapper<Bund
 		detail.setBundleNumber(rs.getString("bundleNumber"));		
 		detail.setTicketNumber(rs.getString("ticketNumber"));
 		
-		
 		return detail;
 	}
+
 
 }

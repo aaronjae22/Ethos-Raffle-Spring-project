@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.raffle.ImportTicketsHelper;
+import com.raffle.pojo.BundleDetails;
 import com.raffle.pojo.TicketNumbers;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.*;
@@ -44,6 +45,9 @@ class ImportTicketsController extends BaseController {
             System.out.println(importedTickets);
             importTicketsHelper.insertImportedTickets(importedTickets);
             model.addAttribute("ticketList", importedTickets);
+
+            List<BundleDetails> bundleImportedTickets = ImportTicketsHelper.bundleImportTickets(path);
+            System.out.println(bundleImportedTickets);
 
         } else {
             System.out.println("It doesn't have permission");
