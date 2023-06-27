@@ -41,6 +41,7 @@ class ImportTicketsController extends BaseController {
     public String importTickets(Model model) throws IOException {
         if (this.hasRole("Administrator")) {
             Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\raffle-master\\raffle\\datafiles\\Excel_Import.xlsx");
+
             List<TicketNumbers> importedTickets = ImportTicketsHelper.importTickets(path);
             System.out.println(importedTickets);
             importTicketsHelper.insertImportedTickets(importedTickets);
@@ -48,6 +49,7 @@ class ImportTicketsController extends BaseController {
 
             List<BundleDetails> bundleImportedTickets = ImportTicketsHelper.bundleImportTickets(path);
             System.out.println(bundleImportedTickets);
+            importTicketsHelper.getTicketsFromImportedBundle(bundleImportedTickets);
 
         } else {
             System.out.println("It doesn't have permission");

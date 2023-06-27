@@ -143,12 +143,49 @@ public class ImportTicketsHelper {
     }
 
 
+    public static void getTicketsFromImportedBundle(List<BundleDetails> bundleDetailsList) {
+
+        for (BundleDetails bundleDetail : bundleDetailsList) {
+
+            System.out.println(bundleDetail);
+            System.out.println(bundleDetail.getTickets());
+            // System.out.println(bundleDetail.getTickets().getClass().getSimpleName());
+
+            loopingThroughImportedBundle(bundleDetail.getTickets(), bundleDetail.getBundleNumber(), bundleDetail.getIdPeriod());
+
+            System.out.println();
+
+        }
+
+        System.out.println(bundleDetailsList.size());
+
+    }
+
+    public static void loopingThroughImportedBundle(List<Ticket> bundleTickets, String bundleNumber, Integer bundlePeriod) {
+
+        // System.out.println(bundleNumber);
+        // System.out.println(bundlePeriod);
+
+        for (Ticket e : bundleTickets) {
+            System.out.println(e);
+            System.out.println(bundleNumber);
+            System.out.println(bundlePeriod);
+        }
+
+    }
+
+
+
     public static void main(String args[]) throws IOException {
 
         Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\raffle-master\\raffle\\datafiles\\Excel_Import.xlsx");
         // Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\db-files\\2019 Sweepstakes prep.xlsx");
+
         // List<TicketNumbers> ticketNumbers = importTickets(path);
+
         List<BundleDetails> bundleDetailsList = bundleImportTickets(path);
+        getTicketsFromImportedBundle(bundleDetailsList);
+        System.out.println();
         System.out.println(bundleDetailsList);
     }
 }
