@@ -43,12 +43,12 @@ class ImportTicketsController extends BaseController {
             Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\raffle-master\\raffle\\datafiles\\Excel_Import.xlsx");
 
             List<TicketNumbers> importedTickets = ImportTicketsHelper.importTickets(path);
-            System.out.println(importedTickets);
+            // System.out.println(importedTickets);
             importTicketsHelper.insertImportedTickets(importedTickets);
             model.addAttribute("ticketList", importedTickets);
 
             List<BundleDetails> bundleImportedTickets = ImportTicketsHelper.bundleImportTickets(path);
-            System.out.println(bundleImportedTickets);
+            // System.out.println(bundleImportedTickets);
             importTicketsHelper.getTicketsFromImportedBundle(bundleImportedTickets);
 
         } else {
