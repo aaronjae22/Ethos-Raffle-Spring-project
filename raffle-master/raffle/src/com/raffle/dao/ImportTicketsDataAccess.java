@@ -53,11 +53,10 @@ public class ImportTicketsDataAccess extends BaseDataAccess {
     }
 
 
-    public void saveImportBundleTicket(BundleDetails ticket) {
+    public void saveImportBundleTicket(BundleDetails bundleDetails) {
 
-        System.out.println("\nTicket: " + ticket.getTickets());
-        System.out.println("Ticket ID Product " + ticket.getIdProduct() + "\n");
-
+        // System.out.println("\nTicket: " + bundleDetails.getTickets());
+        // System.out.println("Ticket ID Product " + bundleDetails.getIdProduct() + "\n");
 
         String INSERT_SQL = "insert into bundle_details (idPeriod, bundleNumber, ticketNumber, idProduct)" +
                 "values(?, ?, ?, ?)";
@@ -73,9 +72,9 @@ public class ImportTicketsDataAccess extends BaseDataAccess {
                         PreparedStatement ps = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
 
                         ps.setInt(1, currentPeriod);
-                        ps.setString(2, ticket.getBundleNumber());
-                        ps.setString(3, ticket.getTicketNumber());
-                        ps.setInt(4, ticket.getIdProduct());
+                        ps.setString(2, bundleDetails.getBundleNumber());
+                        ps.setString(3, bundleDetails.getTicketNumber());
+                        ps.setInt(4, bundleDetails.getIdProduct());
 
 
                         return ps;

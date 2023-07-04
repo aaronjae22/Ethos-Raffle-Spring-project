@@ -47,9 +47,10 @@ class ImportTicketsController extends BaseController {
             importTicketsHelper.insertImportedTickets(importedTickets);
             model.addAttribute("ticketList", importedTickets);
 
+            /* WORKING. DELETE COMMENTS
             List<BundleDetails> bundleImportedTickets = ImportTicketsHelper.bundleImportTickets(path);
             // System.out.println(bundleImportedTickets);
-            importTicketsHelper.getTicketsFromImportedBundle(bundleImportedTickets);
+            importTicketsHelper.getTicketsFromImportedBundle(bundleImportedTickets); */
 
         } else {
             System.out.println("It doesn't have permission");

@@ -148,10 +148,10 @@ public class ImportTicketsHelper {
 
         for (BundleDetails bundleDetail : bundleDetailsList) {
 
-            // System.out.println("\nGet Tickets: " + bundleDetail.getTickets());
+            System.out.println("\nGet Tickets: " + bundleDetail.getTickets());
             // importTicketsDataAccess.saveImportBundleTicket(bundleDetail);
 
-            loopingThroughImportedBundle(bundleDetail, bundleDetail.getTickets(), bundleDetail.getBundleNumber(), bundleDetail.getIdPeriod());
+            // loopingThroughImportedBundle(bundleDetail, bundleDetail.getTickets(), bundleDetail.getBundleNumber(), bundleDetail.getIdPeriod());
 
         }
 
@@ -159,15 +159,14 @@ public class ImportTicketsHelper {
 
     }
 
-    public void loopingThroughImportedBundle(BundleDetails bundleDetail, List<Ticket> bundleTickets, String bundleNumber, Integer bundlePeriod) {
+    /* public void loopingThroughImportedBundle(BundleDetails bundleDetail, List<Ticket> bundleTickets, String bundleNumber, Integer bundlePeriod) {
 
         for (Ticket ticket : bundleTickets) {
             bundleDetail.setTicketNumber(ticket.getTicketNumber());
-            // importTicketsDataAccess.saveImportBundleTicket(ticket);
-            importTicketsDataAccess.saveImportBundleTicket(bundleDetail);
+            importTicketsDataAccess.saveImportBundleTicket(ticket);
         }
 
-    }
+    } */
 
 
     public static void main(String args[]) throws IOException {
