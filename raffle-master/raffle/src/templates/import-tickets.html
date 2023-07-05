@@ -78,13 +78,11 @@
 
                             <tbody>
 
-                                <tr th:each="ticket : ${ticketList}">
-
-                                    <!-- <td th:text="${ticket.getIdTicketNumbers()}"></td> -->
+                                <!-- <tr th:each="ticket : ${ticketList}">
                                     <td th:text="${ticket.getIdTicketNumbers()}"></td>
                                     <td th:text="${ticket.getIdProduct()}"></td>
                                     <td th:text="${ticket.getIdProduct()}"></td>
-                                </tr>
+                                </tr> -->
 
                             </tbody>
 
@@ -161,6 +159,42 @@
             else $(this).removeClass("empty")
         });
         $("#periods").change();
+
+        // Read Excel file from input file
+        const fileInput = document.getElementById('ticketfile');
+
+        const uploadFile = file => {
+
+            console.log('Updating file previously selected!');
+            const API_ENDPOINT = "https://file.io";
+            const request = new XMLHttpRequest();
+            const formData = new FormData();
+
+            request.open("POST", API_ENDPOINT, true);
+
+            request.onreadystatechange = () => {
+                if (request.readyState === 4 && request.status === 200) {
+                    console.log(request.responseText);
+                }
+            };
+
+            formData.append("file", file);
+            request.send(formData);
+
+        }
+
+        fileInput.addEventListener("change", event => {
+            const files = event.target.files;
+            // console.log(files);
+            // console.log(files[0]);
+            uploadFile(files[0]);
+        });
+
+        /* fileSelector.addEventListener('change', (event) => {
+            const ticketsFile = event.target.files;
+            console.log(ticketsFile);
+        }); */
+
 
 
     </script>
