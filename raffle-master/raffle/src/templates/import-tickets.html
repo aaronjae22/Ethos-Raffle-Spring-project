@@ -3,6 +3,9 @@
 
 <head>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+
 </head>
 
 <body>
@@ -39,7 +42,7 @@
                 <div>
                     <h1 class='pull-left' style="margin-top:0">Import Tickets</h1>
 
-                    <input type="file" name="uploadfile" id="ticketfile" style="display:none;"/>
+                    <input type="file" name="ticketfile" id="ticketfile" style="display:none;"/>
                     <label for="ticketfile" class="btn btn-primary btn-lg pull-right" style="font-size: 16px; margin-left: 10px">Select file</label>
 
 
@@ -56,7 +59,7 @@
                         </select>
                     </div>
 
-                    <button type="button" class="btn btn-primary btn-lg pull-right" style="font-size: 16px; margin-right: 10px">Confirm</button>
+                    <button type="button" onclick="uploadFile()" class="btn btn-primary btn-lg pull-right" style="font-size: 16px; margin-right: 10px">Confirm</button>
 
                 </div>
 
@@ -136,6 +139,7 @@
 
     <script>
 
+
         var basePath = '[[@{/}]]';
 
         initializeEvents(basePath);
@@ -160,12 +164,54 @@
         });
         $("#periods").change();
 
-        // Read Excel file from input file
-        const fileInput = document.getElementById('ticketfile');
+        // Uploading file selected in input
+
+        /* async function uploadFile() {
+
+            let formData = new FormData();
+
+            formData.append("file", ticketfile.files[0]);
+
+            let response = await fetch('/upload', {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.status == 200) {
+                console.log("File successfully uploaded!");
+            }
+
+        } */
+
+        function uploadFile() {
+
+            let formData = new FormData();
+
+            // console.log(ticketfile.files[0]);
+            console.log("Uploading file previously selected in input");
+
+            const API_ENDPOINT = "/Raffle/upload";
+            const request = new XMLHttpRequest();
+
+            request.open("POST", API_ENDPOINT, true);
+
+            request.onreadystatechange = () => {
+                if (request.readyState === 4 && request.status === 200) {
+                    console.log(request.responseText);
+                }
+            }
+
+            formData.append("file", ticketfile.files[0]);
+            request.send(formData);
+
+        };
+
+        /*  const fileInput = document.getElementById('ticketfile');
 
         const uploadFile = file => {
 
-            console.log('Updating file previously selected!');
+            console.log("Uploading file previously selected in input");
+
             const API_ENDPOINT = "https://file.io";
             const request = new XMLHttpRequest();
             const formData = new FormData();
@@ -181,20 +227,13 @@
             formData.append("file", file);
             request.send(formData);
 
-        }
+        };
 
         fileInput.addEventListener("change", event => {
             const files = event.target.files;
-            // console.log(files);
-            // console.log(files[0]);
+            console.log(files[0]);
             uploadFile(files[0]);
-        });
-
-        /* fileSelector.addEventListener('change', (event) => {
-            const ticketsFile = event.target.files;
-            console.log(ticketsFile);
         }); */
-
 
 
     </script>

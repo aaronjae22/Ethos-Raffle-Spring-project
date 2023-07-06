@@ -14,16 +14,16 @@ import com.raffle.pojo.TicketNumbers;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.raffle.dao.UserDataAccess;
 import com.raffle.pojo.User;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -40,6 +40,10 @@ class ImportTicketsController extends BaseController {
     @RequestMapping(value = "import-tickets")
     public String importTickets(Model model) throws IOException {
         if (this.hasRole("Administrator")) {
+
+            // Get File Uploader HERE //
+
+
             Path path = Paths.get("C:\\Users\\ayerd\\Documents\\Laboral\\EthosApps\\Projects\\Independents\\Raffle-Spring\\raffle-master\\raffle\\datafiles\\Excel_Import.xlsx");
 
             List<TicketNumbers> importedTickets = ImportTicketsHelper.importTickets(path);
@@ -58,6 +62,13 @@ class ImportTicketsController extends BaseController {
         return "import-tickets";
     }
 
+    @PostMapping("/upload")
+    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
 
+        System.out.println(fileName);
+
+        return ResponseEntity.ok("File Uploaded: " + fileName);
+    }
 
 }
